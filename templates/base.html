@@ -1,0 +1,112 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="{% block meta_description %}ChildGuard AI helps families build safer digital habits.{% endblock %}">
+    <title>{% block title %}ChildGuard AI{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        guardian: {
+                            50: "#eff6ff", 100: "#dbeafe", 500: "#2563eb",
+                            600: "#1d4ed8", 700: "#1e40af", 900: "#172554"
+                        }
+                    },
+                    boxShadow: { soft: "0 20px 45px -20px rgba(37, 99, 235, .3)" }
+                }
+            }
+        };
+    </script>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    {% block extra_head %}{% endblock %}
+</head>
+<body class="flex min-h-screen flex-col bg-slate-50 text-slate-800 antialiased">
+    <header class="sticky top-0 z-50 border-b border-blue-100 bg-white/95 backdrop-blur">
+        <nav class="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8" aria-label="Primary navigation">
+            <a href="{% url 'monitoring:home' %}" class="flex items-center gap-3 font-bold text-guardian-900">
+                <span class="grid h-10 w-10 place-items-center rounded-xl bg-guardian-600 text-white shadow-lg shadow-blue-200" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 3 5 6v5c0 4.6 2.9 8.8 7 10 4.1-1.2 7-5.4 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-4"/>
+                    </svg>
+                </span>
+                <span>ChildGuard <span class="text-guardian-600">AI</span></span>
+            </a>
+
+            <button id="menu-toggle" type="button" class="rounded-lg p-2 text-slate-600 hover:bg-blue-50 md:hidden" aria-controls="mobile-menu" aria-expanded="false">
+                <span class="sr-only">Toggle menu</span>
+                <svg viewBox="0 0 24 24" class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+            </button>
+
+            <div class="hidden items-center gap-1 md:flex">
+                {% with current=request.resolver_match.url_name %}
+                <a href="{% url 'monitoring:home' %}" class="nav-link {% if current == 'home' %}nav-link-active{% endif %}">Home</a>
+                <a href="{% url 'monitoring:dashboard' %}" class="nav-link {% if current == 'dashboard' %}nav-link-active{% endif %}">Dashboard</a>
+                <a href="{% url 'monitoring:profile' %}" class="nav-link {% if current == 'profile' %}nav-link-active{% endif %}">Profile</a>
+                <a href="{% url 'monitoring:resources' %}" class="nav-link {% if current == 'resources' %}nav-link-active{% endif %}">Resources</a>
+                <a href="{% url 'monitoring:assistant' %}" class="nav-link {% if current == 'assistant' %}nav-link-active{% endif %}">AI Bot</a>
+                <a href="{% url 'monitoring:about' %}" class="nav-link {% if current == 'about' %}nav-link-active{% endif %}">About</a>
+                {% endwith %}
+                <form method="post" action="{% url 'monitoring:logout' %}" class="ml-2">
+                    {% csrf_token %}
+                    <button type="submit" class="btn-secondary py-2">Log out</button>
+                </form>
+            </div>
+        </nav>
+
+        <div id="mobile-menu" class="hidden border-t border-blue-100 bg-white px-4 py-3 md:hidden">
+            <a href="{% url 'monitoring:home' %}" class="mobile-nav-link">Home</a>
+            <a href="{% url 'monitoring:dashboard' %}" class="mobile-nav-link">Dashboard</a>
+            <a href="{% url 'monitoring:profile' %}" class="mobile-nav-link">Profile</a>
+            <a href="{% url 'monitoring:resources' %}" class="mobile-nav-link">Resources</a>
+            <a href="{% url 'monitoring:assistant' %}" class="mobile-nav-link">AI Bot</a>
+            <a href="{% url 'monitoring:about' %}" class="mobile-nav-link">About</a>
+            <form method="post" action="{% url 'monitoring:logout' %}">
+                {% csrf_token %}
+                <button type="submit" class="mobile-nav-link w-full text-left">Log out</button>
+            </form>
+        </div>
+    </header>
+
+    <main class="flex-1">{% block content %}{% endblock %}</main>
+
+    <footer class="bg-guardian-900 text-blue-100">
+        <div class="mx-auto grid max-w-7xl gap-8 px-4 py-10 sm:px-6 md:grid-cols-3 lg:px-8">
+            <div>
+                <p class="text-lg font-bold text-white">ChildGuard AI</p>
+                <p class="mt-3 max-w-sm text-sm leading-6 text-blue-200">Thoughtful digital safety tools that help parents protect, teach, and stay connected with their children.</p>
+            </div>
+            <div>
+                <p class="font-semibold text-white">Quick links</p>
+                <div class="mt-3 flex flex-col gap-2 text-sm">
+                    <a href="{% url 'monitoring:dashboard' %}" class="hover:text-white">Guardian dashboard</a>
+                    <a href="{% url 'monitoring:resources' %}" class="hover:text-white">Safety resources</a>
+                    <a href="{% url 'monitoring:about' %}" class="hover:text-white">Our mission</a>
+                </div>
+            </div>
+            <div>
+                <p class="font-semibold text-white">Emergency reminder</p>
+                <p class="mt-3 text-sm leading-6 text-blue-200">Browser alerts are demonstrations. Contact local emergency services when a child is in immediate danger.</p>
+            </div>
+        </div>
+        <div class="border-t border-blue-900/80 py-4 text-center text-sm text-blue-300">
+            &copy; {% now "Y" %} ChildGuard AI. Built for safer digital childhoods.
+        </div>
+    </footer>
+
+    <script>
+        const menuButton = document.getElementById("menu-toggle");
+        const mobileMenu = document.getElementById("mobile-menu");
+        menuButton?.addEventListener("click", () => {
+            const isOpen = menuButton.getAttribute("aria-expanded") === "true";
+            menuButton.setAttribute("aria-expanded", String(!isOpen));
+            mobileMenu.classList.toggle("hidden");
+        });
+    </script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

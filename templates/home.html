@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block title %}ChildGuard AI | A Safer Digital Childhood{% endblock %}
+
+{% block content %}
+<section class="relative overflow-hidden bg-gradient-to-br from-blue-50 via-white to-cyan-50">
+    <div class="absolute -right-24 -top-24 h-72 w-72 rounded-full bg-blue-200/40 blur-3xl"></div>
+    <div class="mx-auto grid max-w-7xl items-center gap-12 px-4 py-20 sm:px-6 lg:grid-cols-2 lg:px-8 lg:py-28">
+        <div>
+            <span class="eyebrow">AI-powered digital guardian</span>
+            <h1 class="mt-5 text-4xl font-extrabold tracking-tight text-slate-950 sm:text-5xl lg:text-6xl">
+                Safer online journeys for <span class="text-guardian-600">growing minds.</span>
+            </h1>
+            <p class="mt-6 max-w-2xl text-lg leading-8 text-slate-600">ChildGuard AI gives families practical tools to monitor safety signals, manage emergency information, and learn healthy digital habits together.</p>
+            <div class="mt-8 flex flex-wrap gap-4">
+                <a href="{% url 'monitoring:dashboard' %}" class="btn-primary">Open dashboard</a>
+                <a href="{% url 'monitoring:assistant' %}" class="btn-secondary">Open AI Bot</a>
+            </div>
+        </div>
+        <div class="relative mx-auto w-full max-w-lg">
+            <div class="rounded-3xl border border-white bg-white/90 p-6 shadow-soft">
+                <div class="flex items-center justify-between">
+                    <div><p class="text-sm text-slate-500">Family safety status</p><p class="mt-1 text-xl font-bold text-slate-900">All systems ready</p></div>
+                    <span class="h-3 w-3 rounded-full bg-emerald-500 shadow-[0_0_0_6px_rgba(16,185,129,.12)]"></span>
+                </div>
+                <div class="mt-6 grid grid-cols-2 gap-4">
+                    <div class="rounded-2xl bg-blue-50 p-5"><p class="text-3xl font-bold text-guardian-600">7</p><p class="mt-1 text-sm text-slate-600">Browser APIs</p></div>
+                    <div class="rounded-2xl bg-cyan-50 p-5"><p class="text-3xl font-bold text-cyan-700">24/7</p><p class="mt-1 text-sm text-slate-600">Safety mindset</p></div>
+                </div>
+                <div class="mt-4 rounded-2xl border border-blue-100 p-5">
+                    <p class="font-semibold text-slate-900">Today’s family tip</p>
+                    <p class="mt-2 text-sm leading-6 text-slate-600">Create a shared charging area outside bedrooms to encourage healthier nighttime routines.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="features" class="section-shell">
+    <div class="text-center">
+        <span class="eyebrow">Core capabilities</span>
+        <h2 class="section-title">One clear place for digital safety</h2>
+        <p class="section-copy mx-auto">Simple browser-based tools make essential family safety actions easier to understand and demonstrate.</p>
+    </div>
+    <div class="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <article class="feature-card"><span class="icon-chip">01</span><h3>Location awareness</h3><p>Request the device’s current coordinates with clear permission and privacy feedback.</p></article>
+        <article class="feature-card"><span class="icon-chip">02</span><h3>Instant alerts</h3><p>Use browser notifications and an audible alarm to demonstrate urgent family alerts.</p></article>
+        <article class="feature-card"><span class="icon-chip">03</span><h3>Family profiles</h3><p>Store key child and parent details locally in the browser without a server upload.</p></article>
+        <article class="feature-card"><span class="icon-chip">04</span><h3>Photo preview</h3><p>Preview an image safely before saving profile details using the browser File API.</p></article>
+        <article class="feature-card"><span class="icon-chip">05</span><h3>Safety learning</h3><p>Use accessible audio and video controls to support family learning sessions.</p></article>
+        <article class="feature-card"><span class="icon-chip">06</span><h3>Focused dashboard</h3><p>Enter fullscreen mode to reduce distractions during an urgent monitoring session.</p></article>
+    </div>
+</section>
+
+<section class="bg-guardian-900 py-16 text-white">
+    <div class="mx-auto grid max-w-7xl gap-6 px-4 sm:grid-cols-2 sm:px-6 lg:grid-cols-4 lg:px-8">
+        <div class="stat-card"><strong>7</strong><span>HTML5 APIs</span></div>
+        <div class="stat-card"><strong>5</strong><span>Responsive pages</span></div>
+        <div class="stat-card"><strong>100%</strong><span>Permission aware</span></div>
+        <div class="stat-card"><strong>1</strong><span>Family-first mission</span></div>
+    </div>
+</section>
+{% endblock %}

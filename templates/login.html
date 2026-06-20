@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Log in to the ChildGuard AI family safety dashboard.">
+    <title>Log In | ChildGuard AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-cyan-50 text-slate-800">
+    <main class="grid min-h-screen place-items-center px-4 py-12">
+        <section class="w-full max-w-md rounded-3xl border border-blue-100 bg-white p-8 shadow-2xl shadow-blue-200/50 sm:p-10">
+            <a href="{% url 'monitoring:landing' %}" class="inline-flex items-center gap-2 font-bold text-blue-700">
+                <span class="grid h-10 w-10 place-items-center rounded-xl bg-blue-600 text-white">CG</span>
+                ChildGuard AI
+            </a>
+
+            <h1 class="mt-8 text-3xl font-extrabold text-slate-950">Welcome back</h1>
+            <p class="mt-2 text-slate-600">Log in to access your guardian dashboard and family safety tools.</p>
+
+            {% if form.errors %}
+            <div class="mt-6 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700" role="alert">
+                The username or password is incorrect. Please try again.
+            </div>
+            {% endif %}
+
+            <form method="post" class="mt-7 space-y-5">
+                {% csrf_token %}
+                {% if next %}<input type="hidden" name="next" value="{{ next }}">{% endif %}
+                <div>
+                    <label for="{{ form.username.id_for_label }}" class="block text-sm font-bold text-slate-700">Username</label>
+                    <input
+                        type="text"
+                        name="{{ form.username.html_name }}"
+                        id="{{ form.username.id_for_label }}"
+                        value="{{ form.username.value|default:'' }}"
+                        autocomplete="username"
+                        autofocus
+                        required
+                        class="mt-2 block w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-100"
+                    >
+                </div>
+                <div>
+                    <label for="{{ form.password.id_for_label }}" class="block text-sm font-bold text-slate-700">Password</label>
+                    <input
+                        type="password"
+                        name="{{ form.password.html_name }}"
+                        id="{{ form.password.id_for_label }}"
+                        autocomplete="current-password"
+                        required
+                        class="mt-2 block w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-100"
+                    >
+                </div>
+                <button type="submit" class="w-full rounded-xl bg-blue-600 px-5 py-3 font-bold text-white shadow-lg shadow-blue-200 transition hover:bg-blue-700">
+                    Log in
+                </button>
+            </form>
+
+            <p class="mt-7 text-center text-sm text-slate-500">
+                Need an account? Ask the ChildGuard administrator to create one.
+            </p>
+            <a href="{% url 'monitoring:landing' %}" class="mt-4 block text-center text-sm font-semibold text-blue-700 hover:text-blue-900">
+                Back to landing page
+            </a>
+        </section>
+    </main>
+</body>
+</html>

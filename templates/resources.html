@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block title %}Safety Resources | ChildGuard AI{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+    <div class="section-shell py-14">
+        <span class="eyebrow">Learn together</span>
+        <h1 class="section-title">Safety Resources</h1>
+        <p class="section-copy">Watch the ChildGuard AI awareness video and use the discussion guide to turn it into a practical family safety conversation.</p>
+    </div>
+</section>
+
+<section class="section-shell">
+    <div class="grid gap-8 lg:grid-cols-2">
+        <article class="media-card">
+            <div class="overflow-hidden rounded-2xl bg-slate-950">
+                <video id="safety-video" class="aspect-video w-full" controls preload="metadata" playsinline>
+                    <source src="/media/videos/Initial_Scene_-_2026-06-14_202606141354.mp4" type="video/mp4">
+                    Your browser does not support HTML5 video.
+                </video>
+            </div>
+            <h2>ChildGuard AI awareness video</h2>
+            <p>This project video introduces the ChildGuard AI safety vision. Watch it together, then discuss which protections and healthy habits matter most for your family.</p>
+            <div class="mt-4 flex flex-wrap gap-3">
+                <button id="restart-video" class="btn-secondary" type="button">Restart video</button>
+                <button id="mute-video" class="btn-secondary" type="button">Mute video</button>
+            </div>
+        </article>
+
+        <article class="media-card">
+            <div class="rounded-2xl bg-gradient-to-br from-blue-600 to-cyan-500 p-8 text-white">
+                <p class="text-sm font-semibold uppercase tracking-widest text-blue-100">After watching</p>
+                <h2 class="mt-3 !text-white">Family discussion guide</h2>
+                <p class="mt-3 text-blue-50">Play a short spoken checklist about privacy, screen time, trusted contacts, and asking for help.</p>
+                <div class="mt-7 flex flex-wrap gap-3">
+                    <button id="play-guide" class="rounded-xl bg-white px-5 py-3 font-semibold text-guardian-700 hover:bg-blue-50" type="button">Play guide</button>
+                    <button id="stop-guide" class="rounded-xl border border-white/40 px-5 py-3 font-semibold hover:bg-white/10" type="button">Stop</button>
+                </div>
+                <p id="guide-status" class="mt-5 text-sm text-blue-100" role="status" aria-live="polite">Guide is ready.</p>
+            </div>
+        </article>
+    </div>
+
+    <div class="mt-14">
+        <h2 class="text-3xl font-bold text-slate-950">Turn the video into action</h2>
+        <div class="mt-7 grid gap-5 md:grid-cols-3">
+            <article class="tip-card"><strong>Choose protections</strong><p>Decide which alerts, screen-time limits, and location rules are appropriate for the child's age.</p></article>
+            <article class="tip-card"><strong>Verify trusted people</strong><p>Review approved contacts and explain how to respond when an unknown person sends a message.</p></article>
+            <article class="tip-card"><strong>Make a family agreement</strong><p>Write simple rules for privacy, bedtime device use, asking for help, and regular safety reviews.</p></article>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const video = document.getElementById("safety-video");
+    const muteButton = document.getElementById("mute-video");
+    document.getElementById("restart-video")?.addEventListener("click", () => {
+        video.currentTime = 0;
+        video.play().catch(() => {});
+    });
+    muteButton?.addEventListener("click", () => {
+        video.muted = !video.muted;
+        muteButton.textContent = video.muted ? "Unmute video" : "Mute video";
+    });
+
+    const guideText = "After watching the ChildGuard AI video, discuss four things together. Keep personal information and live location private. Agree on a healthy daily screen time limit. Accept messages only from trusted contacts. Tell a parent or guardian immediately when anything online feels unsafe or uncomfortable.";
+    const guideStatus = document.getElementById("guide-status");
+    document.getElementById("play-guide")?.addEventListener("click", () => {
+        if (!("speechSynthesis" in window)) {
+            guideStatus.textContent = "Speech audio is not supported by this browser.";
+            return;
+        }
+        window.speechSynthesis.cancel();
+        const guide = new SpeechSynthesisUtterance(guideText);
+        guide.rate = 0.92;
+        guide.onstart = () => guideStatus.textContent = "Playing parenting guide...";
+        guide.onend = () => guideStatus.textContent = "Guide finished.";
+        window.speechSynthesis.speak(guide);
+    });
+    document.getElementById("stop-guide")?.addEventListener("click", () => {
+        window.speechSynthesis?.cancel();
+        guideStatus.textContent = "Guide stopped.";
+    });
+    window.addEventListener("pagehide", () => window.speechSynthesis?.cancel());
+</script>
+{% endblock %}
