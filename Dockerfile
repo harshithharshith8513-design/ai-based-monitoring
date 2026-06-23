@@ -23,5 +23,5 @@ COPY . /app/
 # Expose the port the app runs on
 EXPOSE 8000
 
-# Run gunicorn server
-CMD ["gunicorn", "ChildGuardAI.wsgi:application", "--bind", "0.0.0.0:8000"]
+# FIXED: Run migrations and collect static files automatically before booting Gunicorn
+CMD python manage.py migrate && python manage.py collectstatic --noinput && gunicorn ChildGuardAI.wsgi:application --bind 0.0.0.0:8000
