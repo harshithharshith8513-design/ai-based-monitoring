@@ -23,5 +23,8 @@ COPY . /app/
 # Expose the port the app runs on
 EXPOSE 8000
 
-# FIXED: Run migrations and collect static files automatically before booting Gunicorn
-CMD python manage.py migrate && python manage.py collectstatic --noinput && gunicorn ChildGuardAI.wsgi:application --bind 0.0.0.0:8000
+# AUTOMATED INITIALIZATION: Migrations, static collection, and custom admin profile creation
+CMD python manage.py migrate && \
+    python manage.py collectstatic --noinput && \
+    python -c "import django; django.setup(); from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.filter(username='admin').exists() or User.objects.create_superuser('admin', 'admin@example.com', 'admin123')" && \
+    gunicorn ChildGuardAI.wsgi:application --bind 0.0.0.0:8000
