@@ -7,6 +7,7 @@ app_name = "monitoring"
 
 urlpatterns = [
     path("", views.landing, name="landing"),
+    path("register/", views.register, name="register"),
     path(
         "login/",
         auth_views.LoginView.as_view(

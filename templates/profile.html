@@ -13,17 +13,20 @@
 </section>
 
 <section class="section-shell">
-    <div class="grid gap-8 lg:grid-cols-[1fr_.65fr]">
-        <form id="profile-form" class="panel-card p-6 sm:p-8" novalidate>
+    <!-- Main layout grid -->
+    <div class="grid gap-8 lg:grid-cols-[1.1fr_.9fr] items-start">
+        
+        <!-- Left: Enrollment Form and Video scanner -->
+        <form id="profile-form" class="panel-card space-y-6" novalidate>
             <div class="grid gap-5 sm:grid-cols-2">
                 <label class="form-label">Parent name
-                    <input id="parent-name" class="form-input" type="text" maxlength="80" required>
+                    <input id="parent-name" class="form-input" type="text" maxlength="80" required placeholder="e.g. John Doe">
                 </label>
                 <label class="form-label">Child name
-                    <input id="child-name" class="form-input" type="text" maxlength="80" required>
+                    <input id="child-name" class="form-input" type="text" maxlength="80" required placeholder="e.g. Timmy Doe">
                 </label>
                 <label class="form-label">Child age
-                    <input id="child-age" class="form-input" type="number" min="3" max="17" required>
+                    <input id="child-age" class="form-input" type="number" min="3" max="17" required placeholder="e.g. 10">
                 </label>
                 <label class="form-label">Relationship
                     <select id="relationship" class="form-input">
@@ -43,69 +46,92 @@
                     </select>
                 </label>
                 <label class="form-label">Emergency contact
-                    <input id="emergency-contact" class="form-input" type="tel" maxlength="25" required>
+                    <input id="emergency-contact" class="form-input" type="tel" maxlength="25" required placeholder="e.g. +91 98765 43210">
                 </label>
 
-                <fieldset class="sm:col-span-2 border-2 border-slate-900 p-4 rounded-xl bg-slate-50 mt-2">
-                    <legend class="text-xs font-bold text-slate-800 uppercase tracking-wider px-2 bg-white border-2 border-slate-900 rounded">Biometric Account Role</legend>
+                <fieldset class="sm:col-span-2 border border-slate-800 p-4 rounded-xl bg-slate-950/40 mt-2">
+                    <legend class="text-xs font-bold text-slate-400 uppercase tracking-wider px-2 bg-slate-900 border border-slate-800 rounded">Biometric Account Role</legend>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-2">
-                        <label for="roleParent" class="relative flex items-center p-3 bg-white border-2 border-slate-900 rounded-xl cursor-pointer select-none">
-                            <input type="radio" id="roleParent" name="accountRole" value="parent" class="w-4 h-4 text-blue-600 focus:ring-blue-500" checked>
-                            <div class="ml-3"><span class="block text-sm font-bold text-slate-900">Parent Profile</span></div>
+                        <label for="roleParent" class="relative flex items-center p-3 bg-slate-950/60 border border-slate-850 rounded-xl cursor-pointer select-none hover:border-violet-500/50 transition">
+                            <input type="radio" id="roleParent" name="accountRole" value="parent" class="w-4 h-4 text-violet-600 focus:ring-violet-500" checked>
+                            <div class="ml-3"><span class="block text-sm font-bold text-white">Parent Profile</span></div>
                         </label>
-                        <label for="roleChild" class="relative flex items-center p-3 bg-white border-2 border-slate-900 rounded-xl cursor-pointer select-none">
-                            <input type="radio" id="roleChild" name="accountRole" value="child" class="w-4 h-4 text-blue-600 focus:ring-blue-500">
-                            <div class="ml-3"><span class="block text-sm font-bold text-slate-900">Child Profile</span></div>
+                        <label for="roleChild" class="relative flex items-center p-3 bg-slate-950/60 border border-slate-850 rounded-xl cursor-pointer select-none hover:border-violet-500/50 transition">
+                            <input type="radio" id="roleChild" name="accountRole" value="child" class="w-4 h-4 text-violet-600 focus:ring-violet-500">
+                            <div class="ml-3"><span class="block text-sm font-bold text-white">Child Profile</span></div>
                         </label>
                     </div>
                 </fieldset>
             </div>
 
-            <div class="mt-6 flex flex-col items-center p-4 border-2 border-slate-900 rounded-2xl bg-slate-900 text-white">
-                <div class="relative w-full max-w-md aspect-video bg-black rounded-xl overflow-hidden border border-slate-700 shadow-inner">
-                    <video id="registrationVideo" autoplay muted playsinline class="w-full h-full object-cover min-h-[240px] bg-black"></video>
-                    <canvas id="registrationCanvas" class="absolute top-0 left-0 w-full h-full pointer-events-none"></canvas>
-                    <div id="captureLoader" class="absolute inset-0 bg-slate-900/85 flex flex-col items-center justify-center opacity-0 pointer-events-none transition-opacity">
-                        <div class="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-                        <p class="text-xs text-slate-300 mt-2 font-semibold">Extracting Features...</p>
+            <!-- Face Mapping Scanner Box -->
+            <div class="mt-6 flex flex-col items-center p-5 border border-slate-800 rounded-2xl bg-slate-950 text-white relative">
+                <div class="relative w-full max-w-md aspect-video bg-black rounded-xl overflow-hidden border border-slate-800 shadow-inner">
+                    <video id="registrationVideo" autoplay muted playsinline class="w-full h-full object-cover min-h-[220px] bg-black transform -scale-x-100"></video>
+                    <canvas id="registrationCanvas" class="absolute top-0 left-0 w-full h-full pointer-events-none transform -scale-x-100"></canvas>
+                    <div id="captureLoader" class="absolute inset-0 bg-slate-950/90 flex flex-col items-center justify-center opacity-0 pointer-events-none transition-opacity">
+                        <div class="w-8 h-8 border-4 border-fuchsia-500 border-t-transparent rounded-full animate-spin"></div>
+                        <p class="text-xs text-fuchsia-400 mt-2 font-semibold">Extracting Features...</p>
                     </div>
                 </div>
                 
                 <div class="mt-4 flex gap-3">
-                    <button type="button" id="startCamBtn" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-xl text-xs font-bold tracking-wide uppercase">Start Camera</button>
-                    <button type="button" id="scanFaceBtn" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold tracking-wide uppercase">Scan & Map Face</button>
+                    <button type="button" id="startCamBtn" class="px-4 py-2 bg-slate-900 border border-slate-800 hover:border-slate-700 text-slate-300 hover:text-white rounded-xl text-xs font-bold uppercase tracking-wider transition">Start Camera</button>
+                    <button type="button" id="scanFaceBtn" class="px-4 py-2 bg-gradient-to-r from-violet-600 to-fuchsia-500 hover:from-violet-500 hover:to-fuchsia-400 text-white rounded-xl text-xs font-bold uppercase tracking-wider transition shadow-lg shadow-violet-500/10">Scan & Map Face</button>
                 </div>
-                <div id="biometricStatus" class="mt-3 text-xs text-center font-mono text-slate-400">System ready. Click Start Camera.</div>
+                <div id="biometricStatus" class="mt-3 text-xs text-center font-mono text-slate-500">System ready. Click Start Camera.</div>
             </div>
 
             <div class="mt-7 flex flex-wrap gap-3">
                 <button type="submit" class="btn-primary">Enroll & Save Data</button>
-                <button type="button" id="clearProfilesBtn" class="btn-danger">Delete All Saved Profiles</button>
+                <button type="button" id="clearProfilesBtn" class="btn-danger">Delete All Enrolled</button>
             </div>
             <div id="storage-status" class="status-box" role="status" aria-live="polite">No profile action performed.</div>
         </form>
 
-        <aside class="rounded-3xl border-2 border-slate-950 bg-guardian-900 p-7 text-white shadow-xl flex flex-col justify-start">
-            <h2 class="text-xl font-extrabold text-white">Identity Matrix Core</h2>
-            <p class="mt-3 text-sm leading-6 text-blue-200">The platform isolates deep structural vector weights in your browser local dataset repository, making lookups immediate and completely private.</p>
-        </aside>
+        <!-- Right: DNA 3D visualizer & enrolled profiles -->
+        <div class="space-y-6">
+            <!-- 3D Helix Visualizer -->
+            <div class="panel-card relative overflow-hidden flex flex-col justify-center items-center text-center p-6 border border-slate-800">
+                <div class="absolute w-[200px] h-[200px] bg-fuchsia-500/10 rounded-full blur-[60px] -z-10 animate-pulse"></div>
+                <h3 class="text-sm font-bold text-white font-display uppercase tracking-wider mb-2">Biometric Vector Helix</h3>
+                
+                <!-- Helix Canvas -->
+                <div id="profile-canvas-container" class="w-full h-[250px] cursor-grab active:cursor-grabbing"></div>
+                
+                <p class="text-[10px] text-slate-500 font-mono mt-2">LOCAL BIOMETRIC DATA IS ENCRYPTED SECURELY IN THE BROWSER</p>
+            </div>
+
+            <!-- Important Info Sidebar -->
+            <aside class="rounded-3xl border border-violet-900/30 bg-violet-950/20 p-6 text-sm leading-6 text-violet-300 shadow-lg relative overflow-hidden">
+                <div class="absolute top-0 right-0 h-1.5 left-0 bg-gradient-to-r from-violet-600 to-fuchsia-500"></div>
+                <strong class="text-white font-display block mb-1">Local Registry Core</strong>
+                The platform isolates deep structural vector weights in your browser local dataset repository, making lookup validations completely local and private.
+            </aside>
+        </div>
+
     </div>
 
-    <section class="mt-12">
-        <div class="flex flex-wrap items-end justify-between gap-4 border-b-2 border-slate-900 pb-3">
+    <!-- Active profiles display -->
+    <section class="mt-16 border-t border-slate-900 pt-10">
+        <div class="flex flex-wrap items-end justify-between gap-4 border-b border-slate-800 pb-4">
             <div>
                 <span class="eyebrow">Enrolled Family Profiles</span>
-                <h2 class="mt-2 text-3xl font-extrabold text-slate-950">Active Registrations in Memory</h2>
+                <h2 class="mt-2 text-3xl font-extrabold text-white">Active Registrations in Memory</h2>
             </div>
-            <span id="profile-count" class="rounded-full border-2 border-slate-900 bg-white px-4 py-2 text-sm font-bold shadow-md">0 Enrolled</span>
+            <span id="profile-count" class="rounded-full border border-slate-800 bg-slate-950/80 px-4 py-2 text-xs font-bold text-fuchsia-400 font-display shadow-md">0 Enrolled</span>
         </div>
-        <div id="enrolled-profiles" class="mt-7 grid gap-6 grid-cols-1 md:grid-cols-2 xl:grid-cols-3 min-h-[100px]"></div>
-        <div id="empty-profiles-alert" class="panel-card mt-7 p-8 text-center text-slate-500">
+        
+        <div id="enrolled-profiles" class="mt-8 grid gap-6 grid-cols-1 md:grid-cols-2 xl:grid-cols-3 min-h-[100px]"></div>
+        
+        <div id="empty-profiles-alert" class="panel-card mt-8 p-12 text-center text-slate-500">
             No family members or child profiles registered in local memory database tracking blocks yet.
         </div>
     </section>
 </section>
+{% endblock %}
 
+{% block scripts %}
 <script src="https://cdn.jsdelivr.net/npm/@vladmandic/human/dist/human.js"></script>
 <script>
 document.addEventListener("DOMContentLoaded", () => {
@@ -127,7 +153,7 @@ document.addEventListener("DOMContentLoaded", () => {
     
     let profileDatabase = JSON.parse(localStorage.getItem("human_multi_profiles")) || [];
 
-    // Core Camera Engine Function - Forced execution independent of models
+    // Camera Startup
     async function startupCamera() {
         console.log("Attempting to access camera...");
         statusLabel.textContent = "Requesting browser webcam permissions...";
@@ -141,7 +167,6 @@ document.addEventListener("DOMContentLoaded", () => {
             });
             
             videoElement.srcObject = localStream;
-            // Native fix to play the video track frame update layers
             videoElement.onloadedmetadata = () => {
                 videoElement.play();
                 statusLabel.textContent = "Webcam stream linked successfully. Align face and scan.";
@@ -213,30 +238,29 @@ document.addEventListener("DOMContentLoaded", () => {
 
         profileDatabase.forEach((prof, idx) => {
             const card = document.createElement("article");
-            card.className = "p-5 border-2 border-slate-900 rounded-2xl bg-white shadow-md relative flex flex-col justify-between";
+            card.className = "p-5 border border-slate-800 rounded-2xl bg-slate-950/80 shadow-md relative flex flex-col justify-between hover:border-fuchsia-500/20 transition duration-300";
             const isParent = prof.role === 'parent';
             card.innerHTML = `
                 <div>
-                    <span class="absolute top-4 right-4 text-xs font-bold uppercase px-2 py-1 rounded ${isParent ? 'bg-emerald-100 text-emerald-800 border border-emerald-300' : 'bg-amber-100 text-amber-800 border border-amber-300'}">
+                    <span class="absolute top-4 right-4 text-[10px] font-bold uppercase px-2 py-0.5 rounded ${isParent ? 'bg-emerald-950/60 text-emerald-400 border border-emerald-800/30' : 'bg-amber-950/60 text-amber-400 border border-amber-800/30'}">
                         ${prof.role}
                     </span>
-                    <h3 class="text-lg font-bold text-slate-900">${prof.childName}</h3>
-                    <p class="text-xs text-slate-500 mt-1">Guardian Identity: <strong>${prof.parentName}</strong></p>
-                    <div class="mt-4 pt-3 border-t border-slate-100 grid grid-cols-2 gap-2 text-xs text-slate-600">
-                        <div>Age: <strong>${prof.childAge || 'N/A'} yrs</strong></div>
-                        <div>Limit: <strong>${prof.screenLimit || 'Default'}</strong></div>
+                    <h3 class="text-lg font-bold text-white font-display">${prof.childName}</h3>
+                    <p class="text-xs text-slate-500 mt-1">Guardian Identity: <strong class="text-slate-350">${prof.parentName}</strong></p>
+                    <div class="mt-4 pt-3 border-t border-slate-900 grid grid-cols-2 gap-2 text-xs text-slate-400">
+                        <div>Age: <strong class="text-white">${prof.childAge || 'N/A'} yrs</strong></div>
+                        <div>Limit: <strong class="text-white">${prof.screenLimit || 'Default'}</strong></div>
                     </div>
                 </div>
-                <div class="mt-4 pt-2 flex justify-between items-center border-t border-slate-100">
-                    <span class="text-xs font-bold text-emerald-700">✓ Matrix Enrolled</span>
-                    <button type="button" class="text-xs text-red-500 hover:underline remove-single-btn" data-id="${idx}">Remove</button>
+                <div class="mt-4 pt-2 flex justify-between items-center border-t border-slate-900">
+                    <span class="text-[10px] font-bold text-emerald-400 uppercase">✓ Vector Registered</span>
+                    <button type="button" class="text-xs text-red-400 hover:underline remove-single-btn" data-id="${idx}">Remove</button>
                 </div>
             `;
             profilesContainer.appendChild(card);
         });
     }
 
-    // Connect Click Button Interceptors explicitly
     startCamBtn.addEventListener("click", startupCamera);
     scanFaceBtn.addEventListener("click", processFaceScan);
 
@@ -288,9 +312,139 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // Run layout constructions
     initHumanEngine();
     renderSavedProfiles();
 });
+
+// Three.js DNA Helix Animation
+const helixContainer = document.getElementById('profile-canvas-container');
+if (helixContainer) {
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(50, helixContainer.clientWidth / helixContainer.clientHeight, 0.1, 100);
+    camera.position.z = 12;
+
+    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+    renderer.setSize(helixContainer.clientWidth, helixContainer.clientHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    helixContainer.appendChild(renderer.domElement);
+
+    // Double Helix Particles
+    const strandNodes = 30;
+    const strandGeom1 = new THREE.BufferGeometry();
+    const strandGeom2 = new THREE.BufferGeometry();
+    const pos1 = new Float32Array(strandNodes * 3);
+    const pos2 = new Float32Array(strandNodes * 3);
+
+    const fuchsiaColor = new THREE.Color('#d946ef');
+    const violetColor = new THREE.Color('#8b5cf6');
+
+    // Create helical paths
+    const linesGroup = new THREE.Group();
+    const lineMat = new THREE.LineBasicMaterial({
+        color: 0x6366f1,
+        transparent: true,
+        opacity: 0.2
+    });
+
+    for (let i = 0; i < strandNodes; i++) {
+        const y = (i / strandNodes) * 6 - 3; // range -3 to 3
+        const angle = (i / strandNodes) * Math.PI * 4; // 2 full turns
+        
+        const x1 = Math.sin(angle) * 1.5;
+        const z1 = Math.cos(angle) * 1.5;
+
+        const x2 = Math.sin(angle + Math.PI) * 1.5;
+        const z2 = Math.cos(angle + Math.PI) * 1.5;
+
+        pos1[i * 3] = x1;
+        pos1[i * 3 + 1] = y;
+        pos1[i * 3 + 2] = z1;
+
+        pos2[i * 3] = x2;
+        pos2[i * 3 + 1] = y;
+        pos2[i * 3 + 2] = z2;
+
+        // Draw bridge lines between strands
+        if (i % 2 === 0) {
+            const bridgeGeom = new THREE.BufferGeometry();
+            const bridgePos = new Float32Array([
+                x1, y, z1,
+                x2, y, z2
+            ]);
+            bridgeGeom.setAttribute('position', new THREE.BufferAttribute(bridgePos, 3));
+            const bridgeLine = new THREE.Line(bridgeGeom, lineMat);
+            linesGroup.add(bridgeLine);
+        }
+    }
+
+    strandGeom1.setAttribute('position', new THREE.BufferAttribute(pos1, 3));
+    strandGeom2.setAttribute('position', new THREE.BufferAttribute(pos2, 3));
+
+    function createPointTexture() {
+        const c = document.createElement('canvas');
+        c.width = 16; c.height = 16;
+        const ctx = c.getContext('2d');
+        const g = ctx.createRadialGradient(8, 8, 0, 8, 8, 8);
+        g.addColorStop(0, 'rgba(255, 255, 255, 1)');
+        g.addColorStop(1, 'rgba(255, 255, 255, 0)');
+        ctx.fillStyle = g; ctx.fillRect(0, 0, 16, 16);
+        const tex = new THREE.Texture(c);
+        tex.needsUpdate = true;
+        return tex;
+    }
+
+    const dotMat1 = new THREE.PointsMaterial({
+        size: 0.35,
+        map: createPointTexture(),
+        transparent: true,
+        color: fuchsiaColor,
+        blending: THREE.AdditiveBlending
+    });
+
+    const dotMat2 = new THREE.PointsMaterial({
+        size: 0.35,
+        map: createPointTexture(),
+        transparent: true,
+        color: violetColor,
+        blending: THREE.AdditiveBlending
+    });
+
+    const strand1 = new THREE.Points(strandGeom1, dotMat1);
+    const strand2 = new THREE.Points(strandGeom2, dotMat2);
+
+    const helixGroup = new THREE.Group();
+    helixGroup.add(strand1);
+    helixGroup.add(strand2);
+    helixGroup.add(linesGroup);
+    scene.add(helixGroup);
+
+    let mouseX = 0, targetX = 0;
+    document.addEventListener('mousemove', (e) => {
+        const hw = window.innerWidth / 2;
+        targetX = (e.clientX - hw) * 0.0004;
+    });
+
+    const clock = new THREE.Clock();
+
+    function animate() {
+        requestAnimationFrame(animate);
+        const time = clock.getElapsedTime();
+
+        helixGroup.rotation.y = time * 0.45;
+        helixGroup.rotation.x = Math.sin(time * 0.15) * 0.2;
+
+        mouseX += (targetX - mouseX) * 0.05;
+        scene.rotation.y = mouseX;
+
+        renderer.render(scene, camera);
+    }
+    animate();
+
+    window.addEventListener('resize', () => {
+        camera.aspect = helixContainer.clientWidth / helixContainer.clientHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(helixContainer.clientWidth, helixContainer.clientHeight);
+    });
+}
 </script>
 {% endblock %}

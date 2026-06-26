@@ -7,3 +7,5 @@ venv/
 media/*
 !media/.gitkeep
 staticfiles/
+test_output.txt
+*.log

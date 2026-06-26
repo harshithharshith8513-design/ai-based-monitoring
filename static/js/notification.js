@@ -31,17 +31,17 @@
                 ? customAlert?.value.trim()
                 : alertType?.value;
             if (!message) {
-                alertStatus.textContent = "Enter a custom notification message first.";
+                alertStatus.textContent = "Enter a custom safety message first.";
                 customAlert?.focus();
                 return;
             }
-            new Notification("ChildGuard AI parent alert", {
+            new Notification("ChildGuard AI Security Notification", {
                 body: message,
                 tag: `childguard-${Date.now()}`,
             });
-            alertStatus.textContent = `Notification sent: ${message}`;
+            alertStatus.textContent = "Notification simulation dispatched.";
         } catch {
-            alertStatus.textContent = "The notification could not be sent.";
+            alertStatus.textContent = "The notification simulation could not be dispatched.";
         }
     });
 
@@ -61,8 +61,8 @@
     function stopAlarm() {
         window.clearInterval(alarmTimer);
         alarmTimer = null;
-        alarmButton.textContent = "Play alarm";
-        alarmStatus.textContent = "Alarm is stopped.";
+        alarmButton.textContent = "Activate Siren";
+        alarmStatus.textContent = "Siren silenced.";
     }
 
     alarmButton?.addEventListener("click", async () => {
@@ -72,15 +72,15 @@
         }
         const AudioContext = window.AudioContext || window.webkitAudioContext;
         if (!AudioContext) {
-            alarmStatus.textContent = "Web Audio is not supported by this browser.";
+            alarmStatus.textContent = "Audio outputs are not supported by this browser.";
             return;
         }
         audioContext ??= new AudioContext();
         if (audioContext.state === "suspended") await audioContext.resume();
         playTone();
         alarmTimer = window.setInterval(playTone, 700);
-        alarmButton.textContent = "Stop alarm";
-        alarmStatus.textContent = "Audible alarm is playing.";
+        alarmButton.textContent = "Silence Siren";
+        alarmStatus.textContent = "Siren active and broadcasting...";
     });
 
     window.addEventListener("pagehide", () => {

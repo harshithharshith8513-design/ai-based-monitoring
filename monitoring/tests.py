@@ -113,3 +113,82 @@ class AssistantViewTests(TestCase):
 
         self.assertEqual(response.status_code, 400)
         self.assertIn("under 2000 characters", response.json()["error"])
+
+
+class RegistrationViewTests(TestCase):
+    def test_registration_page_renders(self):
+        response = self.client.get(reverse("monitoring:register"))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "e-KYC Enrollment")
+
+    def test_registration_under_18_rejected(self):
+        data = {
+            "username": "newguardian",
+            "password": "Password123!",
+            "confirm_password": "Password123!",
+            "fullname": "John Doe",
+            "aadhaar_verified": "true",
+            "aadhaar_name": "John Doe",
+            "aadhaar_number": "123456789012",
+            "aadhaar_mobile": "9876543210",
+            "aadhaar_dob": "01/01/2015",
+            "aadhaar_age": "11",
+            "aadhaar_address": "123 Street Name, City, State",
+        }
+        response = self.client.post(reverse("monitoring:register"), data)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "You must be at least 18 years old")
+
+    def test_registration_name_mismatch_rejected(self):
+        data = {
+            "username": "newguardian",
+            "password": "Password123!",
+            "confirm_password": "Password123!",
+            "fullname": "John Doe",
+            "aadhaar_verified": "true",
+            "aadhaar_name": "Jane Doe",
+            "aadhaar_number": "123456789012",
+            "aadhaar_mobile": "9876543210",
+            "aadhaar_dob": "01/01/1990",
+            "aadhaar_age": "36",
+            "aadhaar_address": "123 Street Name, City, State",
+        }
+        response = self.client.post(reverse("monitoring:register"), data)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "does not match Aadhaar profile name")
+
+    def test_registration_missing_aadhaar_fields_rejected(self):
+        data = {
+            "username": "newguardian",
+            "password": "Password123!",
+            "confirm_password": "Password123!",
+            "fullname": "John Doe",
+            "aadhaar_verified": "true",
+            "aadhaar_name": "John Doe",
+            # missing aadhaar_number
+            "aadhaar_mobile": "9876543210",
+            "aadhaar_dob": "01/01/1990",
+            "aadhaar_age": "36",
+            "aadhaar_address": "123 Street Name, City, State",
+        }
+        response = self.client.post(reverse("monitoring:register"), data)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "A valid 12-digit Aadhaar number is required")
+
+    def test_registration_success(self):
+        data = {
+            "username": "newguardian",
+            "password": "Password123!",
+            "confirm_password": "Password123!",
+            "fullname": "John Doe",
+            "aadhaar_verified": "true",
+            "aadhaar_name": "John Doe",
+            "aadhaar_number": "123456789012",
+            "aadhaar_mobile": "9876543210",
+            "aadhaar_dob": "01/01/1990",
+            "aadhaar_age": "36",
+            "aadhaar_address": "123 Street Name, City, State",
+        }
+        response = self.client.post(reverse("monitoring:register"), data)
+        self.assertRedirects(response, reverse("monitoring:home"))
+        self.assertTrue(get_user_model().objects.filter(username="newguardian").exists())

@@ -6,64 +6,91 @@
 {% block content %}
 <section class="page-hero">
     <div class="section-shell py-14">
-        <span class="eyebrow">Live browser tools</span>
+        <span class="eyebrow">Real-Time Telemetry Control</span>
         <h1 class="section-title">Guardian Dashboard</h1>
-        <p class="section-copy">View location, send parent alerts, play an alarm, and use focused viewing. Sensitive actions always require permission.</p>
+        <p class="section-copy">Command center for tracking child locations, triggering emergency sirens, dispatching safety notification templates, and activating a full-screen tactical HUD.</p>
     </div>
 </section>
 
 <section class="section-shell">
-    <div id="dashboard-panel" class="grid gap-6 md:grid-cols-2">
-        <article class="action-card">
-            <span class="icon-chip">GPS</span>
-            <h2>Current location</h2>
-            <p>Ask the browser for this device's approximate coordinates and show the result on Google Maps.</p>
-            <button id="get-location" type="button" class="btn-primary mt-6">Get location</button>
-            <div id="location-status" class="status-box" role="status" aria-live="polite">Location has not been requested.</div>
-            <div id="map-wrapper" class="mt-5 hidden overflow-hidden rounded-2xl border-2 border-slate-900 bg-slate-100 shadow-lg">
-                <iframe id="location-map" class="h-72 w-full" title="Current device location on Google Maps" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    <div class="grid gap-8 lg:grid-cols-[1fr_.6fr] items-start">
+        
+        <!-- Left Side: Dashboard Actions Panel -->
+        <div id="dashboard-panel" class="grid gap-6 md:grid-cols-2">
+            <!-- GPS Location Card -->
+            <article class="action-card">
+                <span class="icon-chip">GPS</span>
+                <h2>Child GPS Telemetry</h2>
+                <p>Ping the child's active terminal to request real-time approximate coordinates and display the results securely on Google Maps.</p>
+                <button id="get-location" type="button" class="btn-primary mt-6">Ping Child Device</button>
+                <div id="location-status" class="status-box" role="status" aria-live="polite">Telemetry connection idle.</div>
+                <div id="map-wrapper" class="mt-5 hidden overflow-hidden rounded-2xl border border-slate-800 bg-slate-950 shadow-lg">
+                    <iframe id="location-map" class="h-64 w-full border-0" title="Current device location on Google Maps" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+            </article>
+
+            <!-- Parent Notification Card -->
+            <article class="action-card">
+                <span class="icon-chip">!</span>
+                <h2>Safety Alert Dispatcher</h2>
+                <p>Simulate incoming urgent safety notifications triggered by the child's device behavior on this control terminal.</p>
+                <label for="notification-type" class="form-label mt-5">Select alert scenario
+                    <select id="notification-type" class="form-input">
+                        <option value="Screen-time limit reached. Please review the child's device activity.">Screen-time limit reached</option>
+                        <option value="An unsafe website attempt was detected. Please check the device.">Unsafe website attempt</option>
+                        <option value="The child's current location needs your attention.">Location needs attention</option>
+                        <option value="A new or unusual contact interaction was detected.">Unusual contact activity</option>
+                        <option value="custom">Custom notification</option>
+                    </select>
+                </label>
+                <label id="custom-notification-wrap" for="custom-notification" class="form-label mt-4 hidden">Custom message
+                    <textarea id="custom-notification" class="form-input min-h-24 resize-y" maxlength="180" placeholder="Enter the notification message"></textarea>
+                </label>
+                <button id="send-alert" type="button" class="btn-primary mt-6">Simulate Child Alert</button>
+                <div id="notification-status" class="status-box" role="status" aria-live="polite">No simulation dispatched.</div>
+            </article>
+
+            <!-- Audible Alarm Card -->
+            <article class="action-card">
+                <span class="icon-chip">SFX</span>
+                <h2>Remote Siren Trigger</h2>
+                <p>Deploy an acoustic locational sound beacon on the child's device to locate them in immediate surroundings.</p>
+                <button id="play-alarm" type="button" class="btn-primary mt-6">Activate Siren</button>
+                <div id="alarm-status" class="status-box" role="status" aria-live="polite">Siren stand-by.</div>
+            </article>
+
+            <!-- Focused View Card -->
+            <article class="action-card">
+                <span class="icon-chip">FS</span>
+                <h2>Tactical HUD Console</h2>
+                <p>Initialize a distraction-free monitoring HUD in fullscreen mode to prioritize tracking telemetry.</p>
+                <button id="open-fullscreen" type="button" class="btn-primary mt-6">Initialize HUD</button>
+                <div id="fullscreen-status" class="status-box" role="status" aria-live="polite">HUD terminal inactive.</div>
+            </article>
+        </div>
+
+        <!-- Right Side: 3D Monitor & Important Warnings -->
+        <div class="space-y-6">
+            <!-- 3D WebGL Monitoring Net -->
+            <div class="panel-card relative overflow-hidden flex flex-col justify-center items-center text-center p-6 border border-slate-800">
+                <div class="absolute w-[200px] h-[200px] bg-violet-500/10 rounded-full blur-[60px] -z-10 animate-pulse"></div>
+                <h3 class="text-sm font-bold text-white font-display uppercase tracking-wider mb-2">Live Radar Safety Mesh</h3>
+                
+                <!-- 3D Canvas -->
+                <div id="dashboard-canvas-container" class="w-full h-[260px] cursor-grab active:cursor-grabbing"></div>
+                
+                <p class="text-[10px] text-slate-500 font-mono mt-2">ACTIVE NODES REPRESENTING SECURED PORTS & SIGNALS</p>
             </div>
-        </article>
 
-        <article class="action-card">
-            <span class="icon-chip">!</span>
-            <h2>Parent notification</h2>
-            <p>Choose what the parent should be notified about, or write a custom safety message.</p>
-            <label for="notification-type" class="form-label mt-5">Alert type
-                <select id="notification-type" class="form-input">
-                    <option value="Screen-time limit reached. Please review the child's device activity.">Screen-time limit reached</option>
-                    <option value="An unsafe website attempt was detected. Please check the device.">Unsafe website attempt</option>
-                    <option value="The child's current location needs your attention.">Location needs attention</option>
-                    <option value="A new or unusual contact interaction was detected.">Unusual contact activity</option>
-                    <option value="custom">Custom notification</option>
-                </select>
-            </label>
-            <label id="custom-notification-wrap" for="custom-notification" class="form-label mt-4 hidden">Custom message
-                <textarea id="custom-notification" class="form-input min-h-24 resize-y" maxlength="180" placeholder="Enter the notification message"></textarea>
-            </label>
-            <button id="send-alert" type="button" class="btn-primary mt-6">Send alert</button>
-            <div id="notification-status" class="status-box" role="status" aria-live="polite">No alert sent.</div>
-        </article>
+            <!-- Important Alerts / Sidebar Warnings -->
+            <aside class="rounded-3xl border border-fuchsia-900/30 bg-fuchsia-950/20 p-6 text-sm leading-6 text-fuchsia-300 shadow-lg relative overflow-hidden">
+                <div class="absolute top-0 right-0 h-1.5 left-0 bg-gradient-to-r from-violet-600 to-fuchsia-500"></div>
+                <strong class="text-white font-display block mb-1">Enterprise Telemetry Sandbox</strong>
+                This dashboard provides live telemetry simulation. Geolocation tracking and notification loops operate within high-security offline sandboxes to protect family identity integrity.
+            </aside>
+        </div>
 
-        <article class="action-card">
-            <span class="icon-chip">SFX</span>
-            <h2>Audible alarm</h2>
-            <p>Play or stop a repeating warning tone generated by the Web Audio API.</p>
-            <button id="play-alarm" type="button" class="btn-primary mt-6">Play alarm</button>
-            <div id="alarm-status" class="status-box" role="status" aria-live="polite">Alarm is stopped.</div>
-        </article>
-
-        <article class="action-card">
-            <span class="icon-chip">FS</span>
-            <h2>Focused view</h2>
-            <p>Expand the dashboard panel to fullscreen for a distraction-free monitoring view.</p>
-            <button id="open-fullscreen" type="button" class="btn-primary mt-6">Open fullscreen</button>
-            <div id="fullscreen-status" class="status-box" role="status" aria-live="polite">Standard view is active.</div>
-        </article>
     </div>
-    <aside class="mt-8 rounded-2xl border-2 border-slate-900 bg-amber-50 p-5 text-sm leading-6 text-amber-900 shadow-lg">
-        <strong>Important:</strong> These browser tools do not contact emergency services or track a child in the background.
-    </aside>
 </section>
 {% endblock %}
 
@@ -71,4 +98,104 @@
 <script src="{% static 'js/geolocation.js' %}" defer></script>
 <script src="{% static 'js/notification.js' %}" defer></script>
 <script src="{% static 'js/fullscreen.js' %}" defer></script>
+
+<script>
+    // Three.js Radar Monitoring Net for Dashboard
+    const container = document.getElementById('dashboard-canvas-container');
+    if (container) {
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(50, container.clientWidth / container.clientHeight, 0.1, 100);
+        camera.position.set(0, 3, 5);
+        camera.lookAt(0, 0, 0);
+
+        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+        renderer.setSize(container.clientWidth, container.clientHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        container.appendChild(renderer.domElement);
+
+        // Grid/Mesh floor representing radar
+        const size = 6;
+        const divisions = 14;
+        const gridHelper = new THREE.GridHelper(size, divisions, 0xd946ef, 0x8b5cf6);
+        gridHelper.material.opacity = 0.25;
+        gridHelper.material.transparent = true;
+        scene.add(gridHelper);
+
+        // Pulse scanning circle
+        const ringGeom = new THREE.RingGeometry(0.1, 0.15, 32);
+        const ringMat = new THREE.MeshBasicMaterial({
+            color: 0xd946ef,
+            side: THREE.DoubleSide,
+            transparent: true,
+            opacity: 0.8,
+            blending: THREE.AdditiveBlending
+        });
+        const ring = new THREE.Mesh(ringGeom, ringMat);
+        ring.rotation.x = Math.PI / 2;
+        scene.add(ring);
+
+        // Nodes coordinates
+        const nodeCount = 5;
+        const nodeGeom = new THREE.SphereGeometry(0.08, 16, 16);
+        const nodeMat = new THREE.MeshBasicMaterial({
+            color: 0x6366f1,
+            transparent: true,
+            opacity: 0.8
+        });
+        
+        const nodes = [];
+        for (let i = 0; i < nodeCount; i++) {
+            const mesh = new THREE.Mesh(nodeGeom, nodeMat);
+            mesh.position.set(
+                (Math.random() - 0.5) * 4,
+                0,
+                (Math.random() - 0.5) * 4
+            );
+            scene.add(mesh);
+            nodes.push({
+                mesh: mesh,
+                speed: 0.5 + Math.random() * 1.5,
+                phase: Math.random() * Math.PI
+            });
+        }
+
+        let mouseX = 0, targetX = 0;
+        document.addEventListener('mousemove', (e) => {
+            const hw = window.innerWidth / 2;
+            targetX = (e.clientX - hw) * 0.0003;
+        });
+
+        const clock = new THREE.Clock();
+
+        function animate() {
+            requestAnimationFrame(animate);
+            const time = clock.getElapsedTime();
+
+            // Rotate grid slightly
+            gridHelper.rotation.y = time * 0.05;
+
+            // Expand ring scanner
+            const ringScale = (time * 1.2) % 3;
+            ring.scale.set(ringScale * 10, ringScale * 10, 1);
+            ring.material.opacity = Math.max(0, 1.0 - (ringScale / 3));
+
+            // Float nodes
+            nodes.forEach(node => {
+                node.mesh.position.y = Math.sin(time * node.speed + node.phase) * 0.15;
+            });
+
+            mouseX += (targetX - mouseX) * 0.05;
+            scene.rotation.y = mouseX;
+
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        window.addEventListener('resize', () => {
+            camera.aspect = container.clientWidth / container.clientHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(container.clientWidth, container.clientHeight);
+        });
+    }
+</script>
 {% endblock %}

@@ -4,34 +4,39 @@
 {% block title %}AI Bot | ChildGuard AI{% endblock %}
 
 {% block content %}
-<section class="bg-gradient-to-br from-blue-50 via-white to-cyan-50 py-8 sm:py-12">
-    <div class="mx-auto max-w-5xl px-4 sm:px-6">
-        <div class="overflow-hidden rounded-3xl border border-blue-100 bg-white shadow-soft">
-            <header class="flex items-center justify-between gap-4 border-b border-blue-100 px-5 py-4 sm:px-7">
+<section class="py-8 sm:py-12 flex-1 flex flex-col justify-center">
+    <div class="mx-auto max-w-7xl px-6 w-full grid gap-8 lg:grid-cols-[1.1fr_.6fr] items-start">
+        
+        <!-- Left: Chat Assistant Container -->
+        <div class="overflow-hidden rounded-3xl border border-slate-800 bg-slate-950/80 shadow-2xl backdrop-blur-md flex flex-col h-[70vh] min-h-[500px]">
+            <!-- Chat Header -->
+            <header class="flex items-center justify-between gap-4 border-b border-slate-900 px-5 py-4 sm:px-7 bg-cyber-darker/60">
                 <div class="flex items-center gap-3">
-                    <span class="grid h-11 w-11 place-items-center rounded-2xl bg-guardian-600 font-bold text-white">AI</span>
+                    <span class="grid h-11 w-11 place-items-center rounded-2xl bg-gradient-to-br from-violet-600 to-fuchsia-500 font-bold text-white font-display shadow-lg shadow-violet-500/10">AI</span>
                     <div>
-                        <h1 class="text-xl font-extrabold text-slate-900">AI Bot</h1>
-                        <p class="text-sm text-slate-500">Digital safety and web assistant</p>
+                        <h1 class="text-xl font-extrabold text-white font-display">AI Bot</h1>
+                        <p class="text-xs text-slate-500">Digital safety and web assistant</p>
                     </div>
                 </div>
                 {% if groq_enabled %}
-                    <span id="chat-mode" class="rounded-full border border-emerald-700 bg-emerald-50 px-3 py-1.5 text-xs font-bold text-emerald-700">AI + web ready</span>
+                    <span id="chat-mode" class="rounded-full border border-emerald-900/40 bg-emerald-950/40 px-3 py-1.5 text-xs font-bold text-emerald-400">AI + web ready</span>
                 {% else %}
-                    <span id="chat-mode" class="rounded-full border border-amber-700 bg-amber-50 px-3 py-1.5 text-xs font-bold text-amber-800">Offline safety mode</span>
+                    <span id="chat-mode" class="rounded-full border border-amber-900/40 bg-amber-950/40 px-3 py-1.5 text-xs font-bold text-amber-400">Offline safety mode</span>
                 {% endif %}
             </header>
 
+            <!-- API warning alert -->
             {% if not groq_enabled %}
-            <div class="border-b-2 border-amber-700 bg-amber-50 px-5 py-4 text-sm text-amber-950 sm:px-7">
+            <div class="border-b border-amber-900/30 bg-amber-950/20 px-5 py-3 text-xs text-amber-300 sm:px-7">
                 <strong>Live web search needs a Groq API key.</strong>
                 Create a key at
-                <a class="font-bold text-blue-700 underline" href="https://console.groq.com/keys" target="_blank" rel="noopener noreferrer">console.groq.com/keys</a>,
+                <a class="font-bold text-fuchsia-400 underline hover:text-fuchsia-300 transition" href="https://console.groq.com/keys" target="_blank" rel="noopener noreferrer">console.groq.com/keys</a>,
                 add it as <code>GROQ_API_KEY=your-key</code> in <code>.env</code>, and restart the server.
             </div>
             {% endif %}
 
-            <div id="chat-messages" class="h-[55vh] min-h-[420px] space-y-4 overflow-y-auto bg-slate-50/70 p-5 sm:p-7" aria-live="polite">
+            <!-- Chat messages scrolling history -->
+            <div id="chat-messages" class="flex-1 space-y-4 overflow-y-auto bg-slate-950/40 p-5 sm:p-7" aria-live="polite">
                 <div class="chat-row chat-row-assistant">
                     <div class="chat-avatar">AI</div>
                     <div class="chat-bubble chat-bubble-assistant">
@@ -40,29 +45,162 @@
                 </div>
             </div>
 
-            <form id="chat-form" class="border-t border-blue-100 bg-white p-4 sm:p-6">
+            <!-- Chat input form -->
+            <form id="chat-form" class="border-t border-slate-900 bg-cyber-darker/60 p-4 sm:p-6">
                 {% csrf_token %}
-                <div class="flex items-end gap-3 rounded-2xl border border-slate-200 bg-slate-50 p-2 focus-within:border-blue-400 focus-within:ring-4 focus-within:ring-blue-100">
+                <div class="flex items-end gap-3 rounded-2xl border border-slate-800 bg-slate-950/70 p-2 focus-within:border-fuchsia-500/50 focus-within:ring-2 focus-within:ring-fuchsia-900/10">
                     <label for="chat-input" class="sr-only">Message AI Bot</label>
                     <textarea id="chat-input" rows="1" maxlength="2000" required
-                        class="max-h-32 min-h-11 flex-1 resize-none bg-transparent px-3 py-2.5 text-slate-900 outline-none"
+                        class="max-h-32 min-h-11 flex-1 resize-none bg-transparent px-3 py-2.5 text-sm text-white outline-none placeholder-slate-600"
                         placeholder="Message AI Bot..."></textarea>
-                    <button id="chat-send" type="submit" class="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-guardian-600 text-white hover:bg-guardian-700 disabled:cursor-not-allowed disabled:opacity-50" aria-label="Send message">
-                        <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/>
-                        </svg>
+                    
+                    <button id="chat-send" type="submit" class="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-gradient-to-r from-violet-600 to-fuchsia-500 hover:from-violet-500 hover:to-fuchsia-400 text-white hover:shadow-lg transition disabled:cursor-not-allowed disabled:opacity-50" aria-label="Send message">
+                        <i data-lucide="send" class="h-4.5 w-4.5"></i>
                     </button>
                 </div>
                 <div class="mt-3 flex items-center justify-between gap-3 text-xs text-slate-500">
                     <span>Press Enter to send, Shift+Enter for a new line.</span>
-                    <button id="clear-chat" type="button" class="font-semibold text-guardian-600 hover:text-guardian-700">Clear chat</button>
+                    <button id="clear-chat" type="button" class="font-semibold text-fuchsia-400 hover:text-fuchsia-300 transition">Clear chat</button>
                 </div>
             </form>
         </div>
+
+        <!-- Right: Neural 3D Node & Info Panel -->
+        <div class="space-y-6">
+            <!-- 3D Neural Node Visualizer -->
+            <div class="panel-card relative overflow-hidden flex flex-col justify-center items-center text-center p-6 border border-slate-800">
+                <div class="absolute w-[180px] h-[180px] bg-violet-500/10 rounded-full blur-[50px] -z-10 animate-pulse"></div>
+                <h3 class="text-sm font-bold text-white font-display uppercase tracking-wider mb-2">Neural AI Pulse Core</h3>
+                
+                <!-- Canvas -->
+                <div id="assistant-canvas-container" class="w-full h-[240px] cursor-grab active:cursor-grabbing"></div>
+                
+                <p class="text-[10px] text-slate-500 font-mono mt-2">PULSE RATE REFLECTING NETWORK LATENCY FLOW</p>
+            </div>
+
+            <!-- Bot Guidance Panel -->
+            <aside class="rounded-3xl border border-violet-900/30 bg-violet-950/20 p-6 text-sm leading-6 text-violet-300 shadow-lg relative overflow-hidden">
+                <div class="absolute top-0 right-0 h-1.5 left-0 bg-gradient-to-r from-violet-600 to-fuchsia-500"></div>
+                <strong class="text-white font-display block mb-1">Safety Constraints</strong>
+                The AI Bot delivers digital safety guidelines and family parenting advice. It does not replace professional support or contact physical emergency coordinates.
+            </aside>
+        </div>
+
     </div>
 </section>
 {% endblock %}
 
 {% block scripts %}
 <script src="{% static 'js/assistant.js' %}" defer></script>
+<script>
+    // Three.js Neural Core Node for Assistant Page
+    const canvasContainer = document.getElementById('assistant-canvas-container');
+    if (canvasContainer) {
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(45, canvasContainer.clientWidth / canvasContainer.clientHeight, 0.1, 100);
+        camera.position.z = 8;
+
+        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+        renderer.setSize(canvasContainer.clientWidth, canvasContainer.clientHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        canvasContainer.appendChild(renderer.domElement);
+
+        // Core Sphere representation
+        const sphereGeom = new THREE.SphereGeometry(1.2, 32, 32);
+        const sphereMat = new THREE.MeshBasicMaterial({
+            color: 0x8b5cf6,
+            wireframe: true,
+            transparent: true,
+            opacity: 0.15,
+            blending: THREE.AdditiveBlending
+        });
+        const core = new THREE.Mesh(sphereGeom, sphereMat);
+        scene.add(core);
+
+        // Neural networking outer lines and nodes
+        const nodesCount = 40;
+        const positions = new Float32Array(nodesCount * 3);
+        const nodeGeom = new THREE.SphereGeometry(0.06, 8, 8);
+        const nodeMat = new THREE.MeshBasicMaterial({ color: 0xd946ef });
+
+        const nodesGroup = new THREE.Group();
+        const nodePoints = [];
+
+        for (let i = 0; i < nodesCount; i++) {
+            const theta = Math.random() * Math.PI * 2;
+            const phi = Math.acos((Math.random() * 2) - 1);
+            const r = 1.6;
+
+            const x = r * Math.sin(phi) * Math.cos(theta);
+            const y = r * Math.sin(phi) * Math.sin(theta);
+            const z = r * Math.cos(phi);
+
+            const mesh = new THREE.Mesh(nodeGeom, nodeMat);
+            mesh.position.set(x, y, z);
+            nodesGroup.add(mesh);
+            nodePoints.push(new THREE.Vector3(x, y, z));
+        }
+        scene.add(nodesGroup);
+
+        // Draw connections lines between near nodes
+        const lineMat = new THREE.LineBasicMaterial({
+            color: 0x6366f1,
+            transparent: true,
+            opacity: 0.2,
+            blending: THREE.AdditiveBlending
+        });
+
+        for (let i = 0; i < nodesCount; i++) {
+            for (let j = i + 1; j < nodesCount; j++) {
+                if (nodePoints[i].distanceTo(nodePoints[j]) < 1.1) {
+                    const lineGeom = new THREE.BufferGeometry().setFromPoints([
+                        nodePoints[i],
+                        nodePoints[j]
+                    ]);
+                    const line = new THREE.Line(lineGeom, lineMat);
+                    nodesGroup.add(line);
+                }
+            }
+        }
+
+        let mouseX = 0, mouseY = 0;
+        let targetX = 0, targetY = 0;
+        document.addEventListener('mousemove', (e) => {
+            const hw = window.innerWidth / 2;
+            const hh = window.innerHeight / 2;
+            targetX = (e.clientX - hw) * 0.0005;
+            targetY = (e.clientY - hh) * 0.0005;
+        });
+
+        const clock = new THREE.Clock();
+
+        function animate() {
+            requestAnimationFrame(animate);
+            const time = clock.getElapsedTime();
+
+            core.rotation.y = time * 0.1;
+            nodesGroup.rotation.y = -time * 0.08;
+            nodesGroup.rotation.x = time * 0.03;
+
+            // Pulse effect
+            const pulse = 1.0 + Math.sin(time * 3.5) * 0.08;
+            core.scale.set(pulse, pulse, pulse);
+            nodesGroup.scale.set(1 + (pulse - 1) * 0.5, 1 + (pulse - 1) * 0.5, 1 + (pulse - 1) * 0.5);
+
+            mouseX += (targetX - mouseX) * 0.05;
+            mouseY += (targetY - mouseY) * 0.05;
+            scene.rotation.y = mouseX;
+            scene.rotation.x = mouseY;
+
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        window.addEventListener('resize', () => {
+            camera.aspect = canvasContainer.clientWidth / canvasContainer.clientHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(canvasContainer.clientWidth, canvasContainer.clientHeight);
+        });
+    }
+</script>
 {% endblock %}

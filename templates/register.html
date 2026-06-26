@@ -1,0 +1,1216 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Register an account on ChildGuard AI.">
+    <title>Register | ChildGuard AI</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Fonts: Plus Jakarta Sans & Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- face-api.js -->
+    <script src="https://cdn.jsdelivr.net/npm/@vladmandic/face-api/dist/face-api.js"></script>
+    <!-- Tesseract.js OCR -->
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        blue: {
+                            50: '#faf5ff',
+                            100: '#f3e8ff',
+                            500: '#8b5cf6',
+                            600: '#7c3aed',
+                            800: '#5b21b6',
+                            900: '#4c1d95'
+                        },
+                        cyan: {
+                            50: '#fdf4ff',
+                            100: '#fae8ff',
+                            200: '#f5d0fe',
+                            300: '#f0abfc',
+                            400: '#e879f9',
+                            500: '#d946ef',
+                            600: '#c084fc',
+                            700: '#a855f7',
+                            800: '#9333ea',
+                            900: '#7e22ce',
+                            950: '#4a044e'
+                        },
+                        cyber: {
+                            blue: "#8b5cf6",
+                            cyan: "#d946ef",
+                            purple: "#6366f1",
+                            dark: "#09070f",
+                            darker: "#05040a",
+                            slate: "#161127",
+                            glow: "rgba(217, 70, 239, 0.15)"
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        display: ['"Outfit"', 'sans-serif']
+                    }
+                }
+            }
+        };
+    </script>
+
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #09070f;
+            color: #f1f5f9;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-family: 'Outfit', sans-serif;
+        }
+
+        /* Glassmorphism Panel */
+        .glass-panel {
+            background: rgba(15, 10, 25, 0.65);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .glow-cyan {
+            box-shadow: 0 0 50px -15px rgba(217, 70, 239, 0.25);
+        }
+
+        /* Scanning Laser Animation */
+        @keyframes laser-sweep {
+            0% {
+                top: 0%;
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 1;
+            }
+
+            90% {
+                opacity: 1;
+            }
+
+            100% {
+                top: 100%;
+                opacity: 0;
+            }
+        }
+
+        .laser-line {
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #d946ef, transparent);
+            animation: laser-sweep 2.5s ease-in-out infinite;
+        }
+
+        /* Pulse Ring for Camera */
+        @keyframes pulse-ring {
+            0% {
+                transform: scale(0.95);
+                opacity: 0.5;
+            }
+
+            50% {
+                opacity: 0.8;
+            }
+
+            100% {
+                transform: scale(1.1);
+                opacity: 0;
+            }
+        }
+
+        .pulse-scanner {
+            animation: pulse-ring 2s infinite;
+        }
+    </style>
+</head>
+
+<body class="selection:bg-cyan-500/30 selection:text-cyan-200 min-h-screen flex flex-col justify-between">
+
+    <!-- Glowing Background Elements -->
+    <div class="fixed top-[-10%] left-[-10%] -z-10 h-[50vw] w-[50vw] rounded-full bg-blue-900/10 blur-[120px]"></div>
+    <div class="fixed bottom-[-10%] right-[-10%] -z-10 h-[50vw] w-[50vw] rounded-full bg-purple-900/10 blur-[120px]">
+    </div>
+
+    <!-- Main Content Container -->
+    <main class="flex-1 flex items-center justify-center px-6 py-12">
+        <section
+            class="w-full max-w-2xl rounded-3xl glass-panel p-8 md:p-10 border border-slate-800 glow-cyan relative overflow-hidden">
+            <!-- Top indicator line -->
+            <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-600 to-cyan-500"></div>
+
+            <div class="flex items-center justify-between border-b border-slate-800/80 pb-6">
+                <a href="{% url 'monitoring:landing' %}"
+                    class="flex items-center gap-2.5 font-display text-xl font-black text-white">
+                    <span
+                        class="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-blue-600 to-cyan-500 text-white">
+                        <i data-lucide="shield-check" class="h-5 w-5"></i>
+                    </span>
+                    <span>ChildGuard <span
+                            class="bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">AI</span></span>
+                </a>
+                <span class="text-xs text-slate-500 font-semibold uppercase bg-slate-900 px-3 py-1.5 border border-slate-800 rounded-lg">e-KYC Enrollment</span>
+            </div>
+
+            <!-- Stepper Indicators -->
+            <div class="mt-8 grid grid-cols-3 gap-2 text-center text-xs font-bold text-slate-500">
+                <div id="step-tab-1" class="border-b-2 border-cyan-500 pb-3 text-cyan-400">1. Account Details</div>
+                <div id="step-tab-2" class="border-b-2 border-slate-800 pb-3">2. Aadhaar e-KYC</div>
+                <div id="step-tab-3" class="border-b-2 border-slate-800 pb-3">3. Face Verification</div>
+            </div>
+
+            <!-- Backend Message Handling -->
+            {% if messages %}
+            <div class="mt-6 space-y-2">
+                {% for message in messages %}
+                <div class="rounded-xl border border-red-500/30 bg-red-950/30 p-4 text-xs text-red-400 flex items-start gap-2.5"
+                    role="alert">
+                    <i data-lucide="alert-triangle" class="h-4.5 w-4.5 text-red-400 flex-shrink-0 mt-0.5"></i>
+                    <span>{{ message }}</span>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <!-- Registration Form -->
+            <form method="post" id="reg-form" class="mt-8">
+                {% csrf_token %}
+
+                <!-- Hidden Verification Inputs -->
+                <input type="hidden" name="aadhaar_verified" id="aadhaar_verified_input" value="false">
+                <input type="hidden" name="aadhaar_name" id="aadhaar_name_input" value="">
+
+                <!-- STEP 1: Basic Information -->
+                <div id="step-content-1" class="space-y-6">
+                    <h3 class="text-lg font-black text-white tracking-tight">Create Your Guardian Account</h3>
+                    <p class="text-xs text-slate-400 leading-relaxed">Please configure your basic profile credentials to
+                        proceed with government ID registration.</p>
+
+                    <div class="space-y-2">
+                        <label for="fullname"
+                            class="block text-xs font-bold text-slate-400 uppercase tracking-wider">Full Name (matches
+                            Aadhaar)</label>
+                        <div class="relative">
+                            <span
+                                class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
+                                <i data-lucide="user" class="h-4.5 w-4.5"></i>
+                            </span>
+                            <input type="text" name="fullname" id="fullname" required
+                                class="block w-full bg-slate-950/60 border border-slate-800 rounded-xl pl-11 pr-4 py-3 text-sm text-white placeholder-slate-500 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 focus:outline-none transition duration-200"
+                                placeholder="Enter your full name">
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label for="username"
+                            class="block text-xs font-bold text-slate-400 uppercase tracking-wider">Username</label>
+                        <div class="relative">
+                            <span
+                                class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
+                                <i data-lucide="user" class="h-4.5 w-4.5"></i>
+                            </span>
+                            <input type="text" name="username" id="username" required
+                                class="block w-full bg-slate-950/60 border border-slate-800 rounded-xl pl-11 pr-4 py-3 text-sm text-white placeholder-slate-500 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 focus:outline-none transition duration-200"
+                                placeholder="Choose a username">
+                        </div>
+                    </div>
+
+                    <div class="grid gap-6 md:grid-cols-2">
+                        <div class="space-y-2">
+                            <label for="password"
+                                class="block text-xs font-bold text-slate-400 uppercase tracking-wider">Password</label>
+                            <div class="relative">
+                                <span
+                                    class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
+                                    <i data-lucide="lock" class="h-4.5 w-4.5"></i>
+                                </span>
+                                <input type="password" name="password" id="password" required
+                                    class="block w-full bg-slate-950/60 border border-slate-800 rounded-xl pl-11 pr-4 py-3 text-sm text-white placeholder-slate-500 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 focus:outline-none transition duration-200"
+                                    placeholder="Enter password">
+                            </div>
+                        </div>
+
+                        <div class="space-y-2">
+                            <label for="confirm_password"
+                                class="block text-xs font-bold text-slate-400 uppercase tracking-wider">Confirm
+                                Password</label>
+                            <div class="relative">
+                                <span
+                                    class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
+                                    <i data-lucide="lock" class="h-4.5 w-4.5"></i>
+                                </span>
+                                <input type="password" name="confirm_password" id="confirm_password" required
+                                    class="block w-full bg-slate-950/60 border border-slate-800 rounded-xl pl-11 pr-4 py-3 text-sm text-white placeholder-slate-500 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 focus:outline-none transition duration-200"
+                                    placeholder="Confirm password">
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="button" onclick="goToStep(2)"
+                        class="w-full flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 px-5 py-3.5 font-bold text-white shadow-lg shadow-cyan-500/10 transition-all duration-300">
+                        Continue to Identity Verification <i data-lucide="arrow-right" class="h-4 w-4"></i>
+                    </button>
+                </div>
+
+                <!-- STEP 2: Aadhaar Upload & OCR Parsing -->
+                <div id="step-content-2" class="space-y-6 hidden">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-lg font-black text-white tracking-tight">Official Aadhaar Upload</h3>
+                        <span
+                            class="text-[10px] text-cyan-400 font-bold border border-cyan-800/40 bg-cyan-950/50 px-2 py-0.5 rounded uppercase">Manual
+                            Document e-KYC</span>
+                    </div>
+
+                    <!-- Guidelines -->
+                    <div
+                        class="rounded-2xl border border-slate-800 bg-slate-950/40 p-5 space-y-3 text-xs leading-relaxed text-slate-400">
+                        <div class="flex items-center gap-2 text-white font-bold mb-1">
+                            <i data-lucide="info" class="h-4 w-4 text-cyan-400"></i>
+                            <span>How to obtain your document:</span>
+                        </div>
+                        <p>1. Open the official government resident portal at:
+                            <a href="https://myaadhaar.uidai.gov.in/genricDownloadAadhaar/en" target="_blank"
+                                class="text-cyan-400 font-bold hover:underline inline-flex items-center gap-0.5">
+                                myaadhaar.uidai.gov.in <i data-lucide="external-link" class="h-3 w-3"></i>
+                            </a>
+                        </p>
+                        <p>2. Download your e-Aadhaar PDF or take a clear photo of your Aadhaar card and upload it below
+                            to auto-fill details.</p>
+                    </div>
+
+                    <!-- Dropzone -->
+                    <div id="dropzone"
+                        class="border-2 border-dashed border-slate-800 hover:border-cyan-500/50 rounded-2xl p-8 text-center bg-slate-950/50 cursor-pointer transition duration-200"
+                        onclick="triggerFileSelect()">
+                        <input type="file" id="aadhaar-file" accept="image/*,application/pdf" class="hidden"
+                            onchange="handleFileUpload(event)">
+                        <div class="space-y-3">
+                            <div
+                                class="flex h-12 w-12 items-center justify-center rounded-xl bg-cyan-500/10 text-cyan-400 mx-auto">
+                                <i data-lucide="upload-cloud" class="h-6 w-6"></i>
+                            </div>
+                            <h4 class="text-sm font-bold text-white">Drag & drop Aadhaar file here</h4>
+                            <p class="text-[10px] text-slate-500">Supports PDF, PNG, JPG, or JPEG up to 10MB.</p>
+                        </div>
+                    </div>
+
+                    <!-- OCR Loading Ticker (Hidden initially) -->
+                    <div id="ocr-loading-card"
+                        class="hidden border border-slate-850 bg-slate-950 rounded-2xl p-6 text-center space-y-4">
+                        <div class="flex items-center justify-center gap-3">
+                            <i data-lucide="scan" class="h-6 w-6 text-cyan-400 animate-pulse"></i>
+                            <h4 id="ocr-status-lbl" class="text-xs font-mono text-cyan-400 font-bold uppercase">
+                                Initializing OCR Engine...</h4>
+                        </div>
+                        <div class="w-full bg-slate-900 border border-slate-850 rounded-full h-3 overflow-hidden p-0.5">
+                            <div id="ocr-progress-fill"
+                                class="bg-gradient-to-r from-cyan-500 to-blue-500 h-full rounded-full w-0 transition-all duration-300">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Uploaded File Details Summary Card -->
+                    <div id="aadhaar-preview-card"
+                        class="hidden border border-slate-800 rounded-2xl bg-slate-950/90 p-5 space-y-4 glow-cyan">
+                        <div class="flex items-center justify-between border-b border-slate-900 pb-3">
+                            <div class="flex items-center gap-2">
+                                <i data-lucide="file-text" class="h-4.5 w-4.5 text-cyan-400"></i>
+                                <span class="text-xs font-bold text-white font-display">e-KYC Extracted Profile</span>
+                            </div>
+                            <span
+                                class="text-[10px] text-emerald-400 font-bold bg-emerald-950/40 border border-emerald-800/30 px-2 py-0.5 rounded uppercase">AI
+                                Extracted</span>
+                        </div>
+
+                        <!-- Data Fields List (Filled by OCR, editable) -->
+                        <div class="space-y-4 text-xs">
+                            <div class="grid gap-4 md:grid-cols-2">
+                                <div class="space-y-1">
+                                    <label class="text-[10px] text-slate-500 uppercase font-bold block">Verified
+                                        Resident Name</label>
+                                    <span id="aadhaar-name-display"
+                                        class="font-bold text-white text-sm bg-slate-900 border border-slate-850 px-2.5 py-2 rounded-lg block uppercase">--</span>
+                                </div>
+                                <div class="space-y-1">
+                                    <label for="aadhaar_number"
+                                        class="text-[10px] text-slate-500 uppercase font-bold block">Aadhaar Number
+                                        (12-Digit)</label>
+                                    <input type="text" name="aadhaar_number" id="aadhaar_number" maxlength="12" required
+                                        class="block w-full bg-slate-900 border border-slate-850 rounded-lg px-3 py-2 text-white placeholder-slate-700 focus:border-cyan-500 focus:outline-none transition font-mono"
+                                        placeholder="12-Digit Number">
+                                </div>
+                            </div>
+
+                            <div class="grid gap-4 md:grid-cols-3">
+                                <div class="space-y-1">
+                                    <label for="aadhaar_mobile"
+                                        class="text-[10px] text-slate-500 uppercase font-bold block">Mobile
+                                        Number</label>
+                                    <input type="text" name="aadhaar_mobile" id="aadhaar_mobile" maxlength="10" required
+                                        class="block w-full bg-slate-900 border border-slate-850 rounded-lg px-3 py-2 text-white placeholder-slate-700 focus:border-cyan-500 focus:outline-none transition"
+                                        placeholder="10-Digit Mobile">
+                                </div>
+                                <div class="space-y-1">
+                                    <label for="aadhaar_dob"
+                                        class="text-[10px] text-slate-500 uppercase font-bold block">Date of
+                                        Birth</label>
+                                    <input type="text" name="aadhaar_dob" id="aadhaar_dob" required
+                                        oninput="recalculateAge()"
+                                        class="block w-full bg-slate-900 border border-slate-850 rounded-lg px-3 py-2 text-white placeholder-slate-700 focus:border-cyan-500 focus:outline-none transition"
+                                        placeholder="DD/MM/YYYY">
+                                </div>
+                                <div class="space-y-1">
+                                    <label for="display_age"
+                                        class="text-[10px] text-slate-500 uppercase font-bold block">Age
+                                        (Calculated)</label>
+                                    <input type="text" name="aadhaar_age" id="display_age" readonly
+                                        class="block w-full bg-slate-900/60 border border-slate-850 rounded-lg px-3 py-2 text-slate-400 font-bold focus:outline-none"
+                                        placeholder="Age">
+                                </div>
+                            </div>
+
+                            <div class="space-y-1">
+                                <label for="aadhaar_address"
+                                    class="text-[10px] text-slate-500 uppercase font-bold block">Address (Aadhaar
+                                    Card)</label>
+                                <textarea name="aadhaar_address" id="aadhaar_address" rows="2" required
+                                    class="block w-full bg-slate-900 border border-slate-850 rounded-lg px-3 py-2 text-white placeholder-slate-700 focus:border-cyan-500 focus:outline-none transition resize-none"
+                                    placeholder="Resident Address"></textarea>
+                            </div>
+                        </div>
+
+                        <button type="button" onclick="verifyAadhaarDetails()"
+                            class="w-full bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white py-2.5 rounded-xl font-bold text-xs shadow-md transition duration-200">
+                            Confirm Details & Proceed to Face Scan
+                        </button>
+                    </div>
+
+                    <div class="flex gap-4">
+                        <button type="button" onclick="goToStep(1)"
+                            class="w-1/3 bg-slate-900 border border-slate-800 hover:border-slate-700 text-slate-400 py-3 rounded-xl font-bold transition">
+                            Back
+                        </button>
+                        <button type="button" id="next-to-step3-btn" onclick="goToStep(3)" disabled
+                            class="w-2/3 flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-500 opacity-50 cursor-not-allowed px-5 py-3.5 font-bold text-white shadow-lg transition-all duration-300">
+                            Go to Face Scan <i data-lucide="camera" class="h-4 w-4"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- STEP 3: Webcam Biometric Match & Face Cropper -->
+                <div id="step-content-3" class="space-y-6 hidden">
+                    <h3 class="text-lg font-black text-white tracking-tight">Resident Face Verification</h3>
+                    <p class="text-xs text-slate-400 leading-relaxed">
+                        To guarantee system integrity, verify your identity by performing a live biometric scan. Crop
+                        your face photo from the document below to get precise biometric matching coordinates.
+                    </p>
+
+                    <!-- Side-by-Side Comparison Container -->
+                    <div class="grid gap-6 md:grid-cols-2 max-w-lg mx-auto">
+                        <!-- Camera Stream / Selfie Preview Pane -->
+                        <div
+                            class="relative w-full aspect-square border-2 border-slate-800 bg-slate-950 rounded-2xl overflow-hidden shadow-2xl flex flex-col items-center justify-center text-center">
+                            <!-- Laser scan overlay -->
+                            <div id="scanning-laser" class="laser-line absolute left-0 right-0 z-20 hidden"></div>
+
+                            <video id="webcam" class="w-full h-full object-cover transform -scale-x-100 hidden" autoplay
+                                playsinline></video>
+                            <img id="selfie-img-preview" class="w-full h-full object-cover hidden"
+                                alt="Uploaded selfie">
+
+                            <!-- Webcam placeholder -->
+                            <div id="webcam-placeholder"
+                                class="absolute inset-0 flex flex-col items-center justify-center p-4">
+                                <div class="relative mb-3">
+                                    <div
+                                        class="absolute inset-0 rounded-full bg-cyan-500/10 pulse-scanner h-10 w-10 mx-auto">
+                                    </div>
+                                    <i data-lucide="camera" class="h-8 w-8 text-cyan-500 relative"></i>
+                                </div>
+                                <h5 class="text-[11px] font-bold text-white font-display">Biometric Camera Node</h5>
+                                <p class="text-[9px] text-slate-500 mt-1 leading-relaxed">Required to verify identity.
+                                </p>
+                                <div class="mt-3 flex flex-wrap gap-2 justify-center">
+                                    <button type="button" onclick="initializeWebcam()"
+                                        class="bg-slate-900 border border-slate-800 text-slate-350 hover:text-white px-3 py-1.5 rounded-lg text-[9px] font-bold uppercase transition hover:border-slate-700">
+                                        Camera Feed
+                                    </button>
+                                    <button type="button" onclick="triggerSelfieSelect()"
+                                        class="bg-slate-900 border border-slate-800 text-slate-350 hover:text-white px-3 py-1.5 rounded-lg text-[9px] font-bold uppercase transition hover:border-slate-700">
+                                        Upload Selfie
+                                    </button>
+                                </div>
+                                <input type="file" id="selfie-file" accept="image/*" class="hidden"
+                                    onchange="handleSelfieUpload(event)">
+                            </div>
+                        </div>
+
+                        <!-- Uploaded Aadhaar Image Reference / Cropper Pane -->
+                        <div
+                            class="relative w-full aspect-square border-2 border-slate-800 bg-slate-950 rounded-2xl overflow-hidden shadow-2xl flex flex-col items-center justify-center text-center">
+                            <!-- Overlay scan border -->
+                            <div id="target-scanner-grid"
+                                class="absolute inset-0 border border-dashed border-cyan-500/30 m-4 rounded-xl hidden">
+                            </div>
+
+                            <!-- Display cropped face image once completed -->
+                            <img id="verify-aadhaar-pic" class="w-full h-full object-cover hidden"
+                                alt="Aadhaar reference picture">
+
+                            <!-- Static full Aadhaar reference display before cropping -->
+                            <img id="verify-aadhaar-full-doc" class="w-full h-full object-contain hidden"
+                                alt="Uploaded Aadhaar card">
+
+                            <div id="verify-pic-placeholder" class="text-slate-600 p-4">
+                                <i data-lucide="user" class="h-8 w-8 text-slate-700 mx-auto mb-2"></i>
+                                <h5 class="text-[11px] font-bold text-white font-display">Reference Image</h5>
+                                <p class="text-[9px] text-slate-500 mt-1 leading-relaxed">Aadhaar card face photo
+                                    profile.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cropper Modal panel inside Step 3 (overlay panel) -->
+                    <div id="crop-workspace-step3"
+                        class="hidden border border-slate-800 rounded-2xl bg-slate-950/95 p-5 space-y-4 shadow-2xl">
+                        <div class="flex items-center justify-between">
+                            <h4 class="text-xs font-bold text-cyan-400 uppercase tracking-wider font-display">Adjust
+                                Selector Over Aadhaar Photo:</h4>
+                            <span class="text-[9px] text-slate-500">Drag to move, resize corner handle</span>
+                        </div>
+
+                        <!-- Cropping Workspace Container -->
+                        <div id="crop-container"
+                            class="relative overflow-hidden border border-slate-850 rounded-xl bg-slate-950 flex justify-center items-center select-none"
+                            style="height: 280px;">
+                            <img id="aadhaar-source-img"
+                                class="max-w-full max-h-full object-contain pointer-events-none"
+                                alt="Aadhaar source image">
+
+                            <!-- Draggable crop box -->
+                            <div id="crop-box"
+                                class="absolute border-2 border-dashed border-cyan-500 bg-cyan-500/10 cursor-move"
+                                style="width: 70px; height: 90px; left: 30px; top: 80px; box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.45);">
+                                <div id="crop-handle"
+                                    class="absolute bottom-0 right-0 w-3 h-3 bg-cyan-500 cursor-se-resize rounded-full border border-slate-950 shadow">
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="button" onclick="confirmStep3Crop()"
+                            class="w-full bg-cyan-600 hover:bg-cyan-500 text-white py-2 rounded-xl font-bold text-xs shadow-md transition duration-200">
+                            Confirm Face Crop Selection
+                        </button>
+                    </div>
+
+                    <!-- Actions and triggers -->
+                    <div class="flex flex-col items-center gap-3">
+                        <button type="button" id="crop-mode-btn" onclick="activateCropMode()"
+                            class="w-full max-w-xs flex items-center justify-center gap-2 rounded-xl border border-slate-800 hover:border-slate-700 bg-slate-900/60 hover:bg-slate-900 py-2.5 text-xs text-slate-350 font-bold transition">
+                            <i data-lucide="crop" class="h-4 w-4"></i> Crop Face from Document
+                        </button>
+
+                        <div id="scan-progress-bar"
+                            class="w-full max-w-sm bg-slate-950 border border-slate-850 rounded-full h-3.5 overflow-hidden hidden p-0.5">
+                            <div id="scan-progress-fill"
+                                class="bg-gradient-to-r from-emerald-500 to-cyan-500 h-full rounded-full w-0 transition-all duration-300">
+                            </div>
+                        </div>
+                        <span id="scan-status-lbl"
+                            class="text-[10px] font-mono text-cyan-400 font-bold hidden">Initializing face
+                            mapping...</span>
+                    </div>
+
+                    <div class="flex gap-4">
+                        <button type="button" onclick="goToStep(2)"
+                            class="w-1/3 bg-slate-900 border border-slate-800 hover:border-slate-700 text-slate-400 py-3.5 rounded-xl font-bold transition">
+                            Back
+                        </button>
+
+                        <button type="button" id="trigger-scan-btn" onclick="startFaceScanning()"
+                            class="w-2/3 flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-emerald-600 to-cyan-500 hover:from-emerald-500 hover:to-cyan-400 px-5 py-3.5 font-bold text-white shadow-lg transition duration-300">
+                            Scan & Verify Face <i data-lucide="scan" class="h-4 w-4"></i>
+                        </button>
+
+                        <button type="submit" id="submit-reg-btn"
+                            class="w-2/3 hidden flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 px-5 py-3.5 font-bold text-white shadow-lg transition duration-300">
+                            Complete Enrollment <i data-lucide="user-check" class="h-4 w-4"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+            <div class="mt-8 border-t border-slate-800/80 pt-6 text-center text-xs text-slate-500">
+                <p>
+                    Already have an account?
+                    <a href="{% url 'monitoring:login' %}"
+                        class="font-bold text-cyan-400 hover:text-cyan-300 transition duration-150">
+                        Log in here
+                    </a>
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-cyber-darker border-t border-slate-900 py-6 text-slate-500 text-[10px] text-center">
+        &copy; {% now "Y" %} ChildGuard AI.
+    </footer>
+
+    <!-- Verification Script -->
+    <script>
+        // Init Lucide Icons
+        lucide.createIcons();
+
+        // Step Routing
+        let currentStep = 1;
+        let originalDocumentDataUrl = null;
+        let croppedPhotoDataUrl = null;
+        let modelsLoaded = false;
+        let aadhaarDetailsConfirmed = false;
+
+        async function loadModels() {
+            const statusLabel = document.getElementById('scan-status-lbl');
+            statusLabel.classList.remove('hidden');
+            statusLabel.innerText = "Loading AI models...";
+
+            const MODEL_URL = 'https://cdn.jsdelivr.net/npm/@vladmandic/face-api/model/';
+
+            try {
+                await faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL);
+                await faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL);
+                await faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL);
+                modelsLoaded = true;
+                statusLabel.innerText = "AI biometric models loaded successfully.";
+                statusLabel.className = "text-xs font-mono text-cyan-400";
+            } catch (err) {
+                console.warn("Failed to load models from jsDelivr, checking fallback weights...", err);
+                try {
+                    const FALLBACK_URL = 'https://justadudewhohacks.github.io/face-api.js/models/';
+                    await faceapi.nets.tinyFaceDetector.loadFromUri(FALLBACK_URL);
+                    await faceapi.nets.faceLandmark68Net.loadFromUri(FALLBACK_URL);
+                    await faceapi.nets.faceRecognitionNet.loadFromUri(FALLBACK_URL);
+                    modelsLoaded = true;
+                    statusLabel.innerText = "AI models loaded (Fallback).";
+                    statusLabel.className = "text-xs font-mono text-cyan-400";
+                } catch (fallbackErr) {
+                    console.error("Failed model loading completely.", fallbackErr);
+                    statusLabel.innerText = "Model loading failed. Bypassing active scanning checks.";
+                    statusLabel.className = "text-xs font-mono text-amber-500";
+                }
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', loadModels);
+
+        function goToStep(step) {
+            if (step === 2) {
+                const fullnameVal = document.getElementById('fullname').value.trim();
+                const usernameVal = document.getElementById('username').value.trim();
+                const passVal = document.getElementById('password').value;
+                const confPassVal = document.getElementById('confirm_password').value;
+
+                if (!fullnameVal || !usernameVal || !passVal || !confPassVal) {
+                    alert("Please fill in all basic registration credentials first.");
+                    return;
+                }
+
+                if (usernameVal.length < 5) {
+                    alert("Username must be at least 5 characters long.");
+                    return;
+                }
+
+                const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/;
+                if (!passwordRegex.test(passVal)) {
+                    alert("Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character (@$!%*?&#).");
+                    return;
+                }
+
+                if (passVal !== confPassVal) {
+                    alert("Passwords do not match.");
+                    return;
+                }
+
+                document.getElementById('aadhaar-name-display').innerText = fullnameVal.toUpperCase();
+                document.getElementById('aadhaar_name_input').value = fullnameVal;
+            }
+
+            if (step === 3) {
+                if (!aadhaarDetailsConfirmed) {
+                    alert("You must successfully upload and confirm your Aadhaar details first.");
+                    return;
+                }
+
+                // Enforce Age limit check (Guardian must be >= 18)
+                const ageVal = parseInt(document.getElementById('display_age').value);
+                if (isNaN(ageVal) || ageVal < 18) {
+                    alert("Guardian registration denied. You must be at least 18 years old to create a ChildGuard AI account.");
+                    return;
+                }
+
+                // Load uploaded document onto Step 3 visual placeholders
+                const verifyFullDoc = document.getElementById('verify-aadhaar-full-doc');
+                verifyFullDoc.src = originalDocumentDataUrl;
+                verifyFullDoc.classList.remove('hidden');
+                document.getElementById('verify-pic-placeholder').classList.add('hidden');
+            }
+
+            document.getElementById(`step-content-${currentStep}`).classList.add('hidden');
+            document.getElementById(`step-tab-${currentStep}`).className = "border-b-2 border-slate-800 pb-3";
+
+            document.getElementById(`step-content-${step}`).classList.remove('hidden');
+            document.getElementById(`step-tab-${step}`).className = "border-b-2 border-cyan-500 pb-3 text-cyan-400";
+
+            currentStep = step;
+        }
+
+        // --- STEP 2: File upload & OCR Parsing logic ---
+
+        function triggerFileSelect() {
+            document.getElementById('aadhaar-file').click();
+        }
+
+        const dropzone = document.getElementById('dropzone');
+        if (dropzone) {
+            dropzone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                dropzone.classList.add('border-cyan-500', 'bg-cyan-950/20');
+            });
+            dropzone.addEventListener('dragleave', () => {
+                dropzone.classList.remove('border-cyan-500', 'bg-cyan-950/20');
+            });
+            dropzone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                dropzone.classList.remove('border-cyan-500', 'bg-cyan-950/20');
+                if (e.dataTransfer.files.length > 0) {
+                    handleFile(e.dataTransfer.files[0]);
+                }
+            });
+        }
+
+        function handleFileUpload(event) {
+            if (event.target.files.length > 0) {
+                handleFile(event.target.files[0]);
+            }
+        }
+
+        async function handleFile(file) {
+            if (!file) return;
+
+            const nameDisplay = document.getElementById('aadhaar-name-display');
+            const previewCard = document.getElementById('aadhaar-preview-card');
+            const ocrLoading = document.getElementById('ocr-loading-card');
+
+            if (file.type.match('image.*')) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    originalDocumentDataUrl = e.target.result;
+
+                    // Display loading progress and trigger OCR
+                    document.getElementById('dropzone').classList.add('hidden');
+                    ocrLoading.classList.remove('hidden');
+
+                    // Bind to the source crop image container in Step 3
+                    document.getElementById('aadhaar-source-img').src = originalDocumentDataUrl;
+
+                    runOCR(originalDocumentDataUrl);
+                };
+                reader.readAsDataURL(file);
+            } else if (file.type === 'application/pdf') {
+                originalDocumentDataUrl = 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=120&h=120&q=80';
+                document.getElementById('dropzone').classList.add('hidden');
+                previewCard.classList.remove('hidden');
+            }
+        }
+
+        // Client-side Tesseract OCR integration
+        async function runOCR(imgSrc) {
+            const ocrStatus = document.getElementById('ocr-status-lbl');
+            const ocrFill = document.getElementById('ocr-progress-fill');
+            const previewCard = document.getElementById('aadhaar-preview-card');
+            const ocrLoading = document.getElementById('ocr-loading-card');
+
+            ocrStatus.innerText = "Initializing OCR scanner...";
+            ocrFill.style.width = "15%";
+
+            try {
+                const worker = await Tesseract.createWorker('eng', 1, {
+                    logger: m => {
+                        if (m.status === 'recognizing text') {
+                            const pct = Math.round(m.progress * 100);
+                            ocrStatus.innerText = `Analyzing document text: ${pct}%`;
+                            ocrFill.style.width = `${15 + Math.round(m.progress * 75)}%`;
+                        }
+                    }
+                });
+
+                ocrStatus.innerText = "Extracting document data...";
+                const ret = await worker.recognize(imgSrc);
+                const text = ret.data.text;
+                await worker.terminate();
+
+                console.log("OCR Extracted Text:\n", text);
+
+                // Parse text
+                parseOCRDetails(text);
+
+                ocrFill.style.width = "100%";
+            } catch (err) {
+                console.error("AI OCR parsing failed", err);
+                ocrStatus.innerText = "Analysis completed with bypass fallback.";
+            } finally {
+                // Show preview card, hide loader
+                ocrLoading.classList.add('hidden');
+                previewCard.classList.remove('hidden');
+            }
+        }
+
+        function parseOCRDetails(text) {
+            // 1. Parse Aadhaar 12-Digit Number
+            const cleanText = text.replace(/\n/g, ' ');
+            const aadhaarRegex = /\b\d{4}\s?\d{4}\s?\d{4}\b/;
+            const match = cleanText.match(aadhaarRegex);
+            if (match) {
+                const num = match[0].replace(/\s/g, '');
+                document.getElementById('aadhaar_number').value = num;
+            }
+
+            // 2. Parse Resident Full Name (find line before DOB/birth keyword)
+            const lines = text.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+            let dobIndex = -1;
+            for (let i = 0; i < lines.length; i++) {
+                const lineLower = lines[i].toLowerCase();
+                if (lineLower.includes('dob') || lineLower.includes('birth') || lineLower.includes('date of') || lineLower.includes('d.o.b')) {
+                    dobIndex = i;
+                    break;
+                }
+            }
+
+            if (dobIndex > 0) {
+                const nameLine = lines[dobIndex - 1];
+                const cleanName = nameLine.replace(/[^A-Za-z\s]/g, '').replace(/\s+/g, ' ').trim();
+                if (cleanName.length > 3) {
+                    document.getElementById('fullname').value = cleanName;
+                    document.getElementById('aadhaar-name-display').innerText = cleanName.toUpperCase();
+                    document.getElementById('aadhaar_name_input').value = cleanName;
+                }
+            }
+
+            // 3. Parse DOB
+            const dobRegex = /(?:DOB|Birth|YOB)\s*:?\s*(\d{2}[/-]\d{2}[/-]\d{4}|\d{4})/i;
+            const dobMatch = text.match(dobRegex);
+            if (dobMatch) {
+                document.getElementById('aadhaar_dob').value = dobMatch[1];
+                recalculateAge();
+            }
+
+            // 4. Parse Address
+            const addressRegex = /(?:Address|Address:)\s*([\s\S]+?)(?=\b\d{6}\b|$)/i;
+            const addressMatch = text.match(addressRegex);
+            let addressVal = "";
+            if (addressMatch) {
+                addressVal = addressMatch[1].trim().replace(/\n/g, ', ');
+            } else {
+                const addressLines = lines.filter(l =>
+                    l.toLowerCase().includes('house') ||
+                    l.toLowerCase().includes('street') ||
+                    l.toLowerCase().includes('road') ||
+                    l.toLowerCase().includes('nagar') ||
+                    l.toLowerCase().includes('colony') ||
+                    l.toLowerCase().includes('ward') ||
+                    l.toLowerCase().includes('dist') ||
+                    l.toLowerCase().includes('state')
+                );
+                addressVal = addressLines.join(', ');
+            }
+            document.getElementById('aadhaar_address').value = addressVal;
+
+            // 5. Parse Mobile Phone
+            const mobileRegex = /\b\d{10}\b/;
+            const mobileMatch = text.match(mobileRegex);
+            if (mobileMatch) {
+                document.getElementById('aadhaar_mobile').value = mobileMatch[0];
+            }
+        }
+
+        function recalculateAge() {
+            const dobStr = document.getElementById('aadhaar_dob').value.trim();
+            const yearMatch = dobStr.match(/\d{4}/);
+            if (yearMatch) {
+                const birthYear = parseInt(yearMatch[0]);
+                const currentYear = new Date().getFullYear();
+                const age = currentYear - birthYear;
+                document.getElementById('display_age').value = age >= 0 ? age : "";
+            } else {
+                document.getElementById('display_age').value = "";
+            }
+        }
+
+        function verifyAadhaarDetails() {
+            const adhaarNum = document.getElementById('aadhaar_number').value.trim();
+            const ageVal = parseInt(document.getElementById('display_age').value);
+            const mobile = document.getElementById('aadhaar_mobile').value.trim();
+            const dob = document.getElementById('aadhaar_dob').value.trim();
+            const address = document.getElementById('aadhaar_address').value.trim();
+
+            if (adhaarNum.length !== 12 || isNaN(adhaarNum)) {
+                alert("Please enter a valid 12-digit Aadhaar Number.");
+                return;
+            }
+
+            if (mobile.length !== 10 || isNaN(mobile)) {
+                alert("Please enter a valid 10-digit Mobile Number.");
+                return;
+            }
+
+            if (!dob) {
+                alert("Please enter a valid Date of Birth.");
+                return;
+            }
+
+            if (!address) {
+                alert("Please enter Address.");
+                return;
+            }
+
+            if (isNaN(ageVal) || ageVal < 18) {
+                alert("Guardian registration denied. You must be at least 18 years old to create a ChildGuard AI account.");
+                return;
+            }
+
+            aadhaarDetailsConfirmed = true;
+
+            const nextBtn = document.getElementById('next-to-step3-btn');
+            nextBtn.disabled = false;
+            nextBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            nextBtn.classList.add('hover:to-cyan-400', 'hover:from-blue-500');
+
+            goToStep(3);
+        }
+
+        // --- STEP 3: Manual Bounding Box Face Cropper in Verification pane ---
+
+        function activateCropMode() {
+            document.getElementById('crop-workspace-step3').classList.remove('hidden');
+            document.getElementById('verify-aadhaar-full-doc').classList.add('hidden');
+            document.getElementById('verify-aadhaar-pic').classList.add('hidden');
+            document.getElementById('crop-mode-btn').classList.add('hidden');
+
+            initCropperBox();
+        }
+
+        function initCropperBox() {
+            const cropBox = document.getElementById('crop-box');
+            const cropHandle = document.getElementById('crop-handle');
+            const cropContainer = document.getElementById('crop-container');
+
+            let isDragging = false;
+            let isResizing = false;
+            let startX, startY, startLeft, startTop, startWidth, startHeight;
+
+            cropBox.addEventListener('mousedown', (e) => {
+                if (e.target === cropHandle) return;
+                isDragging = true;
+                startX = e.clientX;
+                startY = e.clientY;
+                startLeft = cropBox.offsetLeft;
+                startTop = cropBox.offsetTop;
+                e.preventDefault();
+            });
+
+            cropHandle.addEventListener('mousedown', (e) => {
+                isResizing = true;
+                startX = e.clientX;
+                startY = e.clientY;
+                startWidth = cropBox.clientWidth;
+                startHeight = cropBox.clientHeight;
+                e.preventDefault();
+                e.stopPropagation();
+            });
+
+            cropBox.addEventListener('touchstart', (e) => {
+                if (e.target === cropHandle) return;
+                isDragging = true;
+                const touch = e.touches[0];
+                startX = touch.clientX;
+                startY = touch.clientY;
+                startLeft = cropBox.offsetLeft;
+                startTop = cropBox.offsetTop;
+            });
+
+            cropHandle.addEventListener('touchstart', (e) => {
+                isResizing = true;
+                const touch = e.touches[0];
+                startX = touch.clientX;
+                startY = touch.clientY;
+                startWidth = cropBox.clientWidth;
+                startHeight = cropBox.clientHeight;
+                e.stopPropagation();
+            });
+
+            document.addEventListener('mousemove', handlePointerMove);
+            document.addEventListener('touchmove', handlePointerMove, { passive: false });
+
+            function handlePointerMove(e) {
+                if (!isDragging && !isResizing) return;
+
+                const clientX = e.clientX || (e.touches && e.touches[0].clientX);
+                const clientY = e.clientY || (e.touches && e.touches[0].clientY);
+
+                if (isDragging) {
+                    const dx = clientX - startX;
+                    const dy = clientY - startY;
+
+                    let newLeft = startLeft + dx;
+                    let newTop = startTop + dy;
+
+                    newLeft = Math.max(0, Math.min(cropContainer.clientWidth - cropBox.clientWidth, newLeft));
+                    newTop = Math.max(0, Math.min(cropContainer.clientHeight - cropBox.clientHeight, newTop));
+
+                    cropBox.style.left = `${newLeft}px`;
+                    cropBox.style.top = `${newTop}px`;
+
+                    if (e.cancelable) e.preventDefault();
+                }
+
+                if (isResizing) {
+                    const dx = clientX - startX;
+                    const dy = clientY - startY;
+
+                    let newWidth = startWidth + dx;
+                    let newHeight = startHeight + dy;
+
+                    newWidth = Math.max(30, Math.min(cropContainer.clientWidth - cropBox.offsetLeft, newWidth));
+                    newHeight = Math.max(40, Math.min(cropContainer.clientHeight - cropBox.offsetTop, newHeight));
+
+                    cropBox.style.width = `${newWidth}px`;
+                    cropBox.style.height = `${newHeight}px`;
+
+                    if (e.cancelable) e.preventDefault();
+                }
+            }
+
+            document.addEventListener('mouseup', () => { isDragging = false; isResizing = false; });
+            document.addEventListener('touchend', () => { isDragging = false; isResizing = false; });
+        }
+
+        function confirmStep3Crop() {
+            const img = document.getElementById('aadhaar-source-img');
+            const cropBox = document.getElementById('crop-box');
+            const workspace = document.getElementById('crop-workspace-step3');
+
+            // Calculate scale between rendered image and natural source dimensions
+            const imgWidth = img.clientWidth;
+            const imgHeight = img.clientHeight;
+            const imgLeft = img.offsetLeft;
+            const imgTop = img.offsetTop;
+
+            const cropLeft = cropBox.offsetLeft - imgLeft;
+            const cropTop = cropBox.offsetTop - imgTop;
+            const cropWidth = cropBox.clientWidth;
+            const cropHeight = cropBox.clientHeight;
+
+            const scaleX = img.naturalWidth / imgWidth;
+            const scaleY = img.naturalHeight / imgHeight;
+
+            const canvas = document.createElement('canvas');
+            canvas.width = cropWidth * scaleX;
+            canvas.height = cropHeight * scaleY;
+
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(
+                img,
+                cropLeft * scaleX,
+                cropTop * scaleY,
+                cropWidth * scaleX,
+                cropHeight * scaleY,
+                0,
+                0,
+                canvas.width,
+                canvas.height
+            );
+
+            croppedPhotoDataUrl = canvas.toDataURL();
+
+            // Update reference image to cropped photo
+            const verifyPic = document.getElementById('verify-aadhaar-pic');
+            verifyPic.src = croppedPhotoDataUrl;
+
+            // Toggle view visibility
+            workspace.classList.add('hidden');
+            verifyPic.classList.remove('hidden');
+            document.getElementById('crop-mode-btn').classList.remove('hidden');
+
+            console.log("biometric reference cropped face confirmed.");
+        }
+
+        // --- STEP 3: Camera & Face Matching logic ---
+        let webcamStream = null;
+        let webcamVideo = document.getElementById('webcam');
+
+        function initializeWebcam() {
+            navigator.mediaDevices.getUserMedia({ video: { width: 300, height: 300 } })
+                .then(stream => {
+                    webcamStream = stream;
+                    webcamVideo.srcObject = stream;
+                    webcamVideo.classList.remove('hidden');
+                    document.getElementById('webcam-placeholder').classList.add('hidden');
+                    document.getElementById('selfie-img-preview').classList.add('hidden');
+                })
+                .catch(err => {
+                    console.warn("Direct camera access failed", err);
+                    alert("Camera access denied or unavailable. Use the 'Upload Selfie' option to submit a photo instead.");
+                });
+        }
+
+        function triggerSelfieSelect() {
+            document.getElementById('selfie-file').click();
+        }
+
+        function handleSelfieUpload(event) {
+            if (event.target.files.length > 0) {
+                const file = event.target.files[0];
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const selfieImg = document.getElementById('selfie-img-preview');
+                    selfieImg.src = e.target.result;
+                    selfieImg.classList.remove('hidden');
+                    document.getElementById('webcam-placeholder').classList.add('hidden');
+                    webcamVideo.classList.add('hidden');
+
+                    if (webcamStream) {
+                        webcamStream.getTracks().forEach(track => track.stop());
+                    }
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        async function startFaceScanning() {
+            const laser = document.getElementById('scanning-laser');
+            laser.classList.remove('hidden');
+
+            const progressBar = document.getElementById('scan-progress-bar');
+            progressBar.classList.remove('hidden');
+
+            const progressFill = document.getElementById('scan-progress-fill');
+            const statusLabel = document.getElementById('scan-status-lbl');
+            statusLabel.classList.remove('hidden');
+            document.getElementById('target-scanner-grid').classList.remove('hidden');
+
+            document.getElementById('trigger-scan-btn').disabled = true;
+            document.getElementById('trigger-scan-btn').classList.add('opacity-50', 'cursor-not-allowed');
+
+            statusLabel.innerText = "Analyzing biometric sources...";
+            progressFill.style.width = "25%";
+
+            setTimeout(async () => {
+                try {
+                    let referenceImg = document.getElementById('verify-aadhaar-pic');
+
+                    // If user didn't crop the card photo, fall back to matching against full document
+                    if (referenceImg.classList.contains('hidden')) {
+                        referenceImg = document.getElementById('verify-aadhaar-full-doc');
+                        if (referenceImg.classList.contains('hidden')) {
+                            throw new Error("No Aadhaar document photo loaded.");
+                        }
+                    }
+
+                    let faceSource = webcamVideo;
+                    if (webcamVideo.classList.contains('hidden')) {
+                        const selfieImg = document.getElementById('selfie-img-preview');
+                        if (selfieImg && !selfieImg.classList.contains('hidden')) {
+                            faceSource = selfieImg;
+                        } else {
+                            throw new Error("No camera stream or uploaded selfie file detected.");
+                        }
+                    }
+
+                    progressFill.style.width = "50%";
+                    statusLabel.innerText = "Extracting live face landmarks...";
+
+                    const webcamDetection = await faceapi.detectSingleFace(
+                        faceSource,
+                        new faceapi.TinyFaceDetectorOptions({ inputSize: 224, scoreThreshold: 0.25 })
+                    ).withFaceLandmarks().withFaceDescriptor();
+
+                    progressFill.style.width = "75%";
+                    statusLabel.innerText = "Comparing biometric keys...";
+
+                    const refDetection = await faceapi.detectSingleFace(
+                        referenceImg,
+                        new faceapi.TinyFaceDetectorOptions({ inputSize: 224, scoreThreshold: 0.25 })
+                    ).withFaceLandmarks().withFaceDescriptor();
+
+                    progressFill.style.width = "90%";
+                    statusLabel.innerText = "Running match check...";
+
+                    if (!webcamDetection) {
+                        throw new Error("Failed to detect face on camera/selfie feed. Ensure clear lighting.");
+                    }
+                    if (!refDetection) {
+                        throw new Error("Failed to extract a clear face from your Aadhaar card photo. Please crop the face photo from your document first using the 'Crop Face' button.");
+                    }
+
+                    // Compare descriptors
+                    const distance = faceapi.euclideanDistance(webcamDetection.descriptor, refDetection.descriptor);
+                    // Match threshold: distance < 0.55 is a match
+                    const similarity = Math.max(0, Math.min(100, Math.round((1.0 - distance) * 100)));
+
+                    progressFill.style.width = "100%";
+                    laser.classList.add('hidden');
+
+                    if (distance < 0.55) {
+                        statusLabel.innerText = `Biometric Match: ${similarity}% SECURE (Matched)`;
+                        statusLabel.className = "text-xs font-mono text-emerald-400 font-bold";
+
+                        document.getElementById('aadhaar_verified_input').value = "true";
+
+                        document.getElementById('trigger-scan-btn').classList.add('hidden');
+                        document.getElementById('submit-reg-btn').classList.remove('hidden');
+                    } else {
+                        statusLabel.innerText = `Biometric Mismatch: ${similarity}% Similarity (Threshold < 55%)`;
+                        statusLabel.className = "text-xs font-mono text-red-400 font-bold";
+
+                        document.getElementById('trigger-scan-btn').disabled = false;
+                        document.getElementById('trigger-scan-btn').classList.remove('opacity-50', 'cursor-not-allowed');
+                        alert(`Verification Failed!\n\nThe live person does not match the face photo on the uploaded Aadhaar card (Biometric Similarity: ${similarity}%).`);
+                    }
+
+                } catch (err) {
+                    console.error("Biometric match error: ", err);
+                    laser.classList.add('hidden');
+                    statusLabel.innerText = "Scan Failed: " + err.message;
+                    statusLabel.className = "text-xs font-mono text-red-400 font-bold";
+
+                    document.getElementById('trigger-scan-btn').disabled = false;
+                    document.getElementById('trigger-scan-btn').classList.remove('opacity-50', 'cursor-not-allowed');
+
+                    alert("Face Verification Failed: " + err.message);
+                }
+            }, 500);
+        }
+    </script>
+</body>
+
+</html>

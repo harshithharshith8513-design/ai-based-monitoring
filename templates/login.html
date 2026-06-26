@@ -1,68 +1,165 @@
+{% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-full">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Log in to the ChildGuard AI family safety dashboard.">
     <title>Log In | ChildGuard AI</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Fonts: Plus Jakarta Sans & Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cyber: {
+                            blue: "#8b5cf6",
+                            cyan: "#d946ef",
+                            purple: "#6366f1",
+                            dark: "#09070f",
+                            darker: "#05040a",
+                            slate: "#161127",
+                            glow: "rgba(217, 70, 239, 0.15)"
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        display: ['"Outfit"', 'sans-serif']
+                    }
+                }
+            }
+        };
+    </script>
+
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #09070f;
+            color: #f1f5f9;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Outfit', sans-serif;
+        }
+
+        /* Glassmorphism Panel */
+        .glass-panel {
+            background: rgba(15, 10, 25, 0.65);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .glow-cyan {
+            box-shadow: 0 0 50px -15px rgba(217, 70, 239, 0.25);
+        }
+    </style>
 </head>
-<body class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-cyan-50 text-slate-800">
-    <main class="grid min-h-screen place-items-center px-4 py-12">
-        <section class="w-full max-w-md rounded-3xl border border-blue-100 bg-white p-8 shadow-2xl shadow-blue-200/50 sm:p-10">
-            <a href="{% url 'monitoring:landing' %}" class="inline-flex items-center gap-2 font-bold text-blue-700">
-                <span class="grid h-10 w-10 place-items-center rounded-xl bg-blue-600 text-white">CG</span>
-                ChildGuard AI
+<body class="selection:bg-fuchsia-500/30 selection:text-fuchsia-200 min-h-screen flex flex-col justify-between">
+
+    <!-- Glowing Background Elements -->
+    <div class="fixed top-[-10%] left-[-10%] -z-10 h-[50vw] w-[50vw] rounded-full bg-violet-900/10 blur-[120px]"></div>
+    <div class="fixed bottom-[-10%] right-[-10%] -z-10 h-[50vw] w-[50vw] rounded-full bg-fuchsia-900/10 blur-[120px]"></div>
+
+    <main class="flex-1 flex items-center justify-center px-6 py-12">
+        <section class="w-full max-w-md rounded-3xl glass-panel p-8 md:p-10 border border-slate-800 glow-cyan relative overflow-hidden">
+            <!-- Background gradient line decoration -->
+            <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-violet-600 to-fuchsia-500"></div>
+
+            <a href="{% url 'monitoring:landing' %}" class="inline-flex items-center gap-2.5 font-display text-xl font-black text-white hover:opacity-90 transition-opacity">
+                <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-violet-600 to-fuchsia-500 text-white">
+                    <i data-lucide="shield-check" class="h-5 w-5"></i>
+                </span>
+                <span>ChildGuard <span class="bg-gradient-to-r from-violet-400 to-fuchsia-400 bg-clip-text text-transparent">AI</span></span>
             </a>
 
-            <h1 class="mt-8 text-3xl font-extrabold text-slate-950">Welcome back</h1>
-            <p class="mt-2 text-slate-600">Log in to access your guardian dashboard and family safety tools.</p>
+            <h1 class="mt-8 text-3xl font-black text-white tracking-tight font-display">Welcome back</h1>
+            <p class="mt-2 text-sm text-slate-400">Log in to access your family safety dashboard.</p>
 
             {% if form.errors %}
-            <div class="mt-6 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700" role="alert">
-                The username or password is incorrect. Please try again.
+            <div class="mt-6 rounded-xl border border-red-500/30 bg-red-950/30 p-4 text-xs text-red-400 flex items-start gap-2.5" role="alert">
+                <i data-lucide="alert-triangle" class="h-4.5 w-4.5 text-red-400 flex-shrink-0 mt-0.5"></i>
+                <span>The username or password is incorrect. Please try again.</span>
             </div>
             {% endif %}
 
-            <form method="post" class="mt-7 space-y-5">
+            <form method="post" class="mt-8 space-y-6">
                 {% csrf_token %}
                 {% if next %}<input type="hidden" name="next" value="{{ next }}">{% endif %}
-                <div>
-                    <label for="{{ form.username.id_for_label }}" class="block text-sm font-bold text-slate-700">Username</label>
-                    <input
-                        type="text"
-                        name="{{ form.username.html_name }}"
-                        id="{{ form.username.id_for_label }}"
-                        value="{{ form.username.value|default:'' }}"
-                        autocomplete="username"
-                        autofocus
-                        required
-                        class="mt-2 block w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-100"
-                    >
+                
+                <div class="space-y-2">
+                    <label for="{{ form.username.id_for_label }}" class="block text-xs font-bold text-slate-400 uppercase tracking-wider">Username</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
+                            <i data-lucide="user" class="h-4.5 w-4.5"></i>
+                        </span>
+                        <input
+                            type="text"
+                            name="{{ form.username.html_name }}"
+                            id="{{ form.username.id_for_label }}"
+                            value="{{ form.username.value|default:'' }}"
+                            autocomplete="username"
+                            autofocus
+                            required
+                            class="block w-full bg-slate-950/60 border border-slate-800 rounded-xl pl-11 pr-4 py-3 text-sm text-white placeholder-slate-600 focus:border-fuchsia-500 focus:ring-1 focus:ring-fuchsia-500 focus:outline-none transition duration-200"
+                            placeholder="Enter username"
+                        >
+                    </div>
                 </div>
-                <div>
-                    <label for="{{ form.password.id_for_label }}" class="block text-sm font-bold text-slate-700">Password</label>
-                    <input
-                        type="password"
-                        name="{{ form.password.html_name }}"
-                        id="{{ form.password.id_for_label }}"
-                        autocomplete="current-password"
-                        required
-                        class="mt-2 block w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-100"
-                    >
+
+                <div class="space-y-2">
+                    <label for="{{ form.password.id_for_label }}" class="block text-xs font-bold text-slate-400 uppercase tracking-wider">Password</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
+                            <i data-lucide="lock" class="h-4.5 w-4.5"></i>
+                        </span>
+                        <input
+                            type="password"
+                            name="{{ form.password.html_name }}"
+                            id="{{ form.password.id_for_label }}"
+                            autocomplete="current-password"
+                            required
+                            class="block w-full bg-slate-950/60 border border-slate-800 rounded-xl pl-11 pr-4 py-3 text-sm text-white placeholder-slate-600 focus:border-fuchsia-500 focus:ring-1 focus:ring-fuchsia-500 focus:outline-none transition duration-200"
+                            placeholder="Enter password"
+                        >
+                    </div>
                 </div>
-                <button type="submit" class="w-full rounded-xl bg-blue-600 px-5 py-3 font-bold text-white shadow-lg shadow-blue-200 transition hover:bg-blue-700">
-                    Log in
+
+                <button type="submit" class="w-full flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-violet-600 to-fuchsia-500 hover:from-violet-500 hover:to-fuchsia-400 px-5 py-3.5 font-bold text-white shadow-lg shadow-fuchsia-500/10 hover:shadow-fuchsia-500/20 transition-all duration-300">
+                    Log in <i data-lucide="log-in" class="h-4 w-4"></i>
                 </button>
             </form>
 
-            <p class="mt-7 text-center text-sm text-slate-500">
-                Need an account? Ask the ChildGuard administrator to create one.
-            </p>
-            <a href="{% url 'monitoring:landing' %}" class="mt-4 block text-center text-sm font-semibold text-blue-700 hover:text-blue-900">
-                Back to landing page
-            </a>
+            <div class="mt-8 border-t border-slate-800/80 pt-6 text-center text-xs text-slate-500 space-y-3">
+                <p>
+                    Need an account? 
+                    <a href="{% url 'monitoring:register' %}" class="font-bold text-fuchsia-450 hover:text-fuchsia-300 transition duration-150">
+                        Register with Aadhaar e-KYC
+                    </a>
+                </p>
+                <a href="{% url 'monitoring:landing' %}" class="inline-flex items-center gap-1.5 font-semibold text-slate-400 hover:text-white transition">
+                    <i data-lucide="arrow-left" class="h-3.5 w-3.5"></i> Back to landing
+                </a>
+            </div>
         </section>
     </main>
+
+    <!-- Footer -->
+    <footer class="bg-cyber-darker border-t border-slate-900 py-6 text-slate-500 text-[10px] text-center">
+        &copy; {% now "Y" %} ChildGuard AI.
+    </footer>
+
+    <!-- Initialize Lucide -->
+    <script>
+        lucide.createIcons();
+    </script>
 </body>
 </html>

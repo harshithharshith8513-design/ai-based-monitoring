@@ -13,48 +13,98 @@
 
 <section class="section-shell">
     <div class="grid gap-8 lg:grid-cols-2">
-        <article class="media-card">
-            <div class="overflow-hidden rounded-2xl bg-slate-950">
-                <video id="safety-video" class="aspect-video w-full" controls preload="metadata" playsinline>
-                    <source src="/media/videos/Initial_Scene_-_2026-06-14_202606141354.mp4" type="video/mp4">
-                    Your browser does not support HTML5 video.
-                </video>
+        <!-- Video Player Card -->
+        <article class="media-card flex flex-col justify-between">
+            <div>
+                <div class="overflow-hidden rounded-2xl bg-slate-950 border border-slate-800 shadow-inner">
+                    <video id="safety-video" class="aspect-video w-full" controls preload="metadata" playsinline>
+                        <source src="/media/videos/Initial_Scene_-_2026-06-14_202606141354.mp4" type="video/mp4">
+                        Your browser does not support HTML5 video.
+                    </video>
+                </div>
+                <h2 class="mt-5 text-white">ChildGuard AI awareness video</h2>
+                <p class="mt-2 text-slate-450 leading-relaxed text-sm">This project video introduces the ChildGuard AI safety vision. Watch it together, then discuss which protections and healthy habits matter most for your family.</p>
             </div>
-            <h2>ChildGuard AI awareness video</h2>
-            <p>This project video introduces the ChildGuard AI safety vision. Watch it together, then discuss which protections and healthy habits matter most for your family.</p>
-            <div class="mt-4 flex flex-wrap gap-3">
-                <button id="restart-video" class="btn-secondary" type="button">Restart video</button>
-                <button id="mute-video" class="btn-secondary" type="button">Mute video</button>
+            <div class="mt-6 flex flex-wrap gap-3">
+                <button id="restart-video" class="btn-secondary flex items-center gap-1.5 text-xs font-bold" type="button">
+                    <i data-lucide="rotate-ccw" class="h-3.5 w-3.5"></i> Restart Video
+                </button>
+                <button id="mute-video" class="btn-secondary flex items-center gap-1.5 text-xs font-bold" type="button">
+                    <i data-lucide="volume-x" class="h-3.5 w-3.5"></i> Mute Video
+                </button>
             </div>
         </article>
 
-        <article class="media-card">
-            <div class="rounded-2xl bg-gradient-to-br from-blue-600 to-cyan-500 p-8 text-white">
-                <p class="text-sm font-semibold uppercase tracking-widest text-blue-100">After watching</p>
-                <h2 class="mt-3 !text-white">Family discussion guide</h2>
-                <p class="mt-3 text-blue-50">Play a short spoken checklist about privacy, screen time, trusted contacts, and asking for help.</p>
-                <div class="mt-7 flex flex-wrap gap-3">
-                    <button id="play-guide" class="rounded-xl bg-white px-5 py-3 font-semibold text-guardian-700 hover:bg-blue-50" type="button">Play guide</button>
-                    <button id="stop-guide" class="rounded-xl border border-white/40 px-5 py-3 font-semibold hover:bg-white/10" type="button">Stop</button>
+        <!-- Speech Guide Card -->
+        <article class="media-card flex flex-col justify-between bg-gradient-to-br from-violet-900/10 to-fuchsia-900/10 border border-violet-900/20">
+            <div>
+                <div class="rounded-2xl bg-gradient-to-br from-violet-600/80 to-fuchsia-500/80 p-6 text-white shadow-lg shadow-violet-500/10">
+                    <p class="text-[10px] font-bold uppercase tracking-widest text-violet-100 font-display">After watching</p>
+                    <h2 class="mt-2 !text-white font-display text-2xl font-black">Family Discussion Guide</h2>
+                    <p class="mt-3 text-sm text-violet-100 leading-relaxed">Play a short spoken checklist about privacy, screen time, trusted contacts, and asking for help.</p>
+                    
+                    <div class="mt-6 flex flex-wrap gap-3">
+                        <button id="play-guide" class="rounded-xl bg-white px-5 py-2.5 text-xs font-bold text-violet-750 hover:bg-violet-50 transition shadow-md" type="button">
+                            Play spoken guide
+                        </button>
+                        <button id="stop-guide" class="rounded-xl border border-white/30 px-5 py-2.5 text-xs font-bold text-white hover:bg-white/10 transition" type="button">
+                            Stop
+                        </button>
+                    </div>
+                    <p id="guide-status" class="mt-5 text-xs text-violet-200 font-mono" role="status" aria-live="polite">Guide status: Ready.</p>
                 </div>
-                <p id="guide-status" class="mt-5 text-sm text-blue-100" role="status" aria-live="polite">Guide is ready.</p>
+                
+                <p class="mt-6 text-slate-400 text-sm leading-relaxed">
+                    Speaking checklist guides children on internet hygiene. We recommend parents review these principles regularly with their children.
+                </p>
+            </div>
+            
+            <div class="mt-6 border-t border-slate-900 pt-4 text-xs text-slate-500 flex items-center gap-2">
+                <i data-lucide="volume-2" class="h-4.5 w-4.5 text-fuchsia-400"></i> Local Speech Synthesis Engine Active
             </div>
         </article>
     </div>
 
-    <div class="mt-14">
-        <h2 class="text-3xl font-bold text-slate-950">Turn the video into action</h2>
-        <div class="mt-7 grid gap-5 md:grid-cols-3">
-            <article class="tip-card"><strong>Choose protections</strong><p>Decide which alerts, screen-time limits, and location rules are appropriate for the child's age.</p></article>
-            <article class="tip-card"><strong>Verify trusted people</strong><p>Review approved contacts and explain how to respond when an unknown person sends a message.</p></article>
-            <article class="tip-card"><strong>Make a family agreement</strong><p>Write simple rules for privacy, bedtime device use, asking for help, and regular safety reviews.</p></article>
+    <!-- 3D visualizer and action tips -->
+    <div class="mt-16 grid gap-8 lg:grid-cols-[1.1fr_.9fr] items-start">
+        
+        <!-- Left: Discussion items list -->
+        <div>
+            <h2 class="text-3xl font-extrabold text-white font-display">Turn the video into action</h2>
+            <div class="mt-8 grid gap-5 md:grid-cols-3">
+                <article class="tip-card hover:border-violet-500/20 transition duration-300">
+                    <strong>Choose protections</strong>
+                    <p>Decide which alerts, screen-time limits, and location rules are appropriate for the child's age.</p>
+                </article>
+                <article class="tip-card hover:border-violet-500/20 transition duration-300">
+                    <strong>Verify trusted people</strong>
+                    <p>Review approved contacts and explain how to respond when an unknown person sends a message.</p>
+                </article>
+                <article class="tip-card hover:border-violet-500/20 transition duration-300">
+                    <strong>Make a family agreement</strong>
+                    <p>Write simple rules for privacy, bedtime device use, asking for help, and regular safety reviews.</p>
+                </article>
+            </div>
         </div>
+
+        <!-- Right: 3D rotating library cube -->
+        <div class="panel-card relative overflow-hidden flex flex-col justify-center items-center text-center p-6 border border-slate-800">
+            <div class="absolute w-[200px] h-[200px] bg-violet-500/10 rounded-full blur-[60px] -z-10 animate-pulse"></div>
+            <h3 class="text-sm font-bold text-white font-display uppercase tracking-wider mb-2">Interactive Safety Matrix</h3>
+            
+            <!-- Three.js Canvas -->
+            <div id="resources-canvas-container" class="w-full h-[230px] cursor-grab active:cursor-grabbing"></div>
+            
+            <p class="text-[10px] text-slate-500 font-mono mt-2">CLICK AND DRAG TO ROTATE THE 3D KNOWLEDGE MODEL</p>
+        </div>
+
     </div>
 </section>
 {% endblock %}
 
 {% block scripts %}
 <script>
+    // Video controls script
     const video = document.getElementById("safety-video");
     const muteButton = document.getElementById("mute-video");
     document.getElementById("restart-video")?.addEventListener("click", () => {
@@ -63,9 +113,13 @@
     });
     muteButton?.addEventListener("click", () => {
         video.muted = !video.muted;
-        muteButton.textContent = video.muted ? "Unmute video" : "Mute video";
+        muteButton.innerHTML = video.muted ? 
+            `<i class="h-3.5 w-3.5" data-lucide="volume-2"></i> Unmute Video` : 
+            `<i class="h-3.5 w-3.5" data-lucide="volume-x"></i> Mute Video`;
+        lucide.createIcons();
     });
 
+    // Spoken guide script
     const guideText = "After watching the ChildGuard AI video, discuss four things together. Keep personal information and live location private. Agree on a healthy daily screen time limit. Accept messages only from trusted contacts. Tell a parent or guardian immediately when anything online feels unsafe or uncomfortable.";
     const guideStatus = document.getElementById("guide-status");
     document.getElementById("play-guide")?.addEventListener("click", () => {
@@ -76,7 +130,7 @@
         window.speechSynthesis.cancel();
         const guide = new SpeechSynthesisUtterance(guideText);
         guide.rate = 0.92;
-        guide.onstart = () => guideStatus.textContent = "Playing parenting guide...";
+        guide.onstart = () => guideStatus.textContent = "Playing parenting guide speech...";
         guide.onend = () => guideStatus.textContent = "Guide finished.";
         window.speechSynthesis.speak(guide);
     });
@@ -85,5 +139,141 @@
         guideStatus.textContent = "Guide stopped.";
     });
     window.addEventListener("pagehide", () => window.speechSynthesis?.cancel());
+
+    // Three.js 3D rotating library cube
+    const cubeContainer = document.getElementById('resources-canvas-container');
+    if (cubeContainer) {
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(45, cubeContainer.clientWidth / cubeContainer.clientHeight, 0.1, 100);
+        camera.position.z = 6;
+
+        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+        renderer.setSize(cubeContainer.clientWidth, cubeContainer.clientHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        cubeContainer.appendChild(renderer.domElement);
+
+        // Core wireframe cube
+        const boxGeom = new THREE.BoxGeometry(2, 2, 2, 2, 2, 2);
+        const boxMat = new THREE.MeshBasicMaterial({
+            color: 0x8b5cf6,
+            wireframe: true,
+            transparent: true,
+            opacity: 0.35,
+            blending: THREE.AdditiveBlending
+        });
+        const box = new THREE.Mesh(boxGeom, boxMat);
+        scene.add(box);
+
+        // Solid inner core
+        const innerGeom = new THREE.BoxGeometry(1.6, 1.6, 1.6);
+        const innerMat = new THREE.MeshBasicMaterial({
+            color: 0xd946ef,
+            transparent: true,
+            opacity: 0.08,
+            blending: THREE.AdditiveBlending
+        });
+        const innerBox = new THREE.Mesh(innerGeom, innerMat);
+        scene.add(innerBox);
+
+        // Outer corner glowing node spheres
+        const nodeGeom = new THREE.SphereGeometry(0.08, 16, 16);
+        const nodeMat = new THREE.MeshBasicMaterial({
+            color: 0x6366f1,
+            transparent: true,
+            opacity: 0.8
+        });
+
+        // Add small spheres to vertices
+        const posAttr = boxGeom.attributes.position;
+        const addedCoords = new Set();
+        
+        for (let i = 0; i < posAttr.count; i++) {
+            const x = posAttr.getX(i);
+            const y = posAttr.getY(i);
+            const z = posAttr.getZ(i);
+            const key = `${x.toFixed(1)},${y.toFixed(1)},${z.toFixed(1)}`;
+            
+            if (!addedCoords.has(key)) {
+                addedCoords.add(key);
+                const node = new THREE.Mesh(nodeGeom, nodeMat);
+                node.position.set(x, y, z);
+                box.add(node);
+            }
+        }
+
+        // Mouse Drag to rotate variables
+        let isDragging = false;
+        let prevMouseX = 0;
+        let prevMouseY = 0;
+
+        cubeContainer.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            prevMouseX = e.clientX;
+            prevMouseY = e.clientY;
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            const deltaX = e.clientX - prevMouseX;
+            const deltaY = e.clientY - prevMouseY;
+            box.rotation.y += deltaX * 0.01;
+            box.rotation.x += deltaY * 0.01;
+            prevMouseX = e.clientX;
+            prevMouseY = e.clientY;
+        });
+
+        document.addEventListener('mouseup', () => {
+            isDragging = false;
+        });
+
+        // Touch support
+        cubeContainer.addEventListener('touchstart', (e) => {
+            isDragging = true;
+            prevMouseX = e.touches[0].clientX;
+            prevMouseY = e.touches[0].clientY;
+        });
+
+        cubeContainer.addEventListener('touchmove', (e) => {
+            if (!isDragging) return;
+            const deltaX = e.touches[0].clientX - prevMouseX;
+            const deltaY = e.touches[0].clientY - prevMouseY;
+            box.rotation.y += deltaX * 0.01;
+            box.rotation.x += deltaY * 0.01;
+            prevMouseX = e.touches[0].clientX;
+            prevMouseY = e.touches[0].clientY;
+        });
+
+        cubeContainer.addEventListener('touchend', () => {
+            isDragging = false;
+        });
+
+        const clock = new THREE.Clock();
+
+        function animate() {
+            requestAnimationFrame(animate);
+            const time = clock.getElapsedTime();
+
+            // Auto rotation when not dragging
+            if (!isDragging) {
+                box.rotation.y = time * 0.15;
+                box.rotation.x = time * 0.08;
+            }
+
+            innerBox.rotation.y = -box.rotation.y;
+            innerBox.rotation.x = -box.rotation.x;
+
+            const pulse = 1.0 + Math.sin(time * 3.0) * 0.03;
+            box.scale.set(pulse, pulse, pulse);
+
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        window.addEventListener('resize', () => {
+            camera.aspect = cubeContainer.clientWidth / cubeContainer.clientHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(cubeContainer.clientWidth, cubeContainer.clientHeight);
+        });
+    }
 </script>
 {% endblock %}

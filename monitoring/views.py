@@ -5,8 +5,11 @@ from urllib.request import Request, urlopen
 
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
+from django.contrib.auth import login
+from django.contrib.auth.models import User
+from django.contrib import messages
 from django.http import JsonResponse
-from django.shortcuts import render
 
 logger = logging.getLogger(__name__)
 MAX_ASSISTANT_PROMPT_LENGTH = 2000
@@ -106,6 +109,115 @@ def request_groq_reply(user_message, safe_history):
 
 def landing(request):
     return render(request, "landing.html")
+
+
+def register(request):
+    if request.user.is_authenticated:
+        return redirect("monitoring:home")
+
+    if request.method == "POST":
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+        confirm_password = request.POST.get("confirm_password")
+        fullname = request.POST.get("fullname")
+        
+        # Aadhaar parameters returned from UI verified state
+        aadhaar_verified = request.POST.get("aadhaar_verified") == "true"
+        aadhaar_name = request.POST.get("aadhaar_name")
+
+        if not username or not password or not fullname:
+            messages.error(request, "Please fill in all basic registration fields.")
+            return render(request, "register.html")
+
+        if len(username) < 5:
+            messages.error(request, "Username must be at least 5 characters long.")
+            return render(request, "register.html")
+
+        # Password complexity validation: >= 8 chars, upper, lower, digit, special char
+        import re
+        password_regex = re.compile(
+            r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$"
+        )
+        if not password_regex.match(password):
+            messages.error(
+                request,
+                "Password must be at least 8 characters long and contain at least one uppercase letter, "
+                "one lowercase letter, one number, and one special character (@$!%*?&#)."
+            )
+            return render(request, "register.html")
+
+        if password != confirm_password:
+            messages.error(request, "Passwords do not match.")
+            return render(request, "register.html")
+
+        if not aadhaar_verified:
+            messages.error(request, "Aadhaar e-KYC / DigiLocker verification is mandatory.")
+            return render(request, "register.html")
+
+        # Extract extra Aadhaar fields
+        aadhaar_number = request.POST.get("aadhaar_number")
+        aadhaar_mobile = request.POST.get("aadhaar_mobile")
+        aadhaar_address = request.POST.get("aadhaar_address")
+        aadhaar_dob = request.POST.get("aadhaar_dob")
+
+        if not aadhaar_number or len(aadhaar_number) != 12 or not aadhaar_number.isdigit():
+            messages.error(request, "A valid 12-digit Aadhaar number is required.")
+            return render(request, "register.html")
+
+        if not aadhaar_mobile or len(aadhaar_mobile) != 10 or not aadhaar_mobile.isdigit():
+            messages.error(request, "A valid 10-digit Aadhaar linked mobile number is required.")
+            return render(request, "register.html")
+
+        if not aadhaar_dob:
+            messages.error(request, "Aadhaar Date of Birth is required.")
+            return render(request, "register.html")
+
+        if not aadhaar_address or not aadhaar_address.strip():
+            messages.error(request, "Aadhaar Resident Address is required.")
+            return render(request, "register.html")
+
+        # Enforce Age Restricting Validation (Guardian must be >= 18)
+        aadhaar_age_str = request.POST.get("aadhaar_age")
+        try:
+            aadhaar_age = int(aadhaar_age_str)
+            if aadhaar_age < 18:
+                messages.error(
+                    request,
+                    f"Guardian account creation denied. You must be at least 18 years old (Age extracted: {aadhaar_age})."
+                )
+                return render(request, "register.html")
+        except (ValueError, TypeError):
+            messages.error(request, "Aadhaar Age information could not be verified.")
+            return render(request, "register.html")
+
+        # Validation: Verify Name Matches Aadhaar
+        if fullname.strip().lower() != aadhaar_name.strip().lower():
+            messages.error(
+                request,
+                f"Registration name '{fullname}' does not match Aadhaar profile name '{aadhaar_name}'."
+            )
+            return render(request, "register.html")
+
+        # Check if username exists
+        if User.objects.filter(username=username).exists():
+            messages.error(request, "Username is already taken.")
+            return render(request, "register.html")
+
+        try:
+            # Create user and log in
+            user = User.objects.create_user(
+                username=username,
+                password=password,
+                first_name=fullname
+            )
+            login(request, user)
+            messages.success(request, f"Welcome to ChildGuard AI, {fullname}!")
+            return redirect("monitoring:home")
+        except Exception as e:
+            messages.error(request, f"Registration failed: {str(e)}")
+            return render(request, "register.html")
+
+    return render(request, "register.html")
 
 
 @login_required
